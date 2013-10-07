@@ -1,4 +1,4 @@
-# Quilt [![Build Status](https://secure.travis-ci.org/garbados/quilt.png?branch=master)](http://travis-ci.org/garbados/quilt)
+# Quilt [![Build Status](https://secure.travis-ci.org/garbados/quilt.js.png?branch=master)](http://travis-ci.org/garbados/quilt.js)
 
 Maps a file directory to a CouchDB / Cloudant database.
 
