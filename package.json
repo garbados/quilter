@@ -1,0 +1,25 @@
+{
+  "name": "spellbook",
+  "version": "0.0.0",
+  "description": "Maps file directory to a Cloudant database",
+  "main": "Gruntfile.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "garbados/spellbook"
+  },
+  "keywords": [
+    "couchdb",
+    "cloudant"
+  ],
+  "author": "Max Thayer <garbados@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "~1.13.0"
+  }
+}
