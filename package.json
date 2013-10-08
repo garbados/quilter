@@ -21,5 +21,9 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "~1.13.0"
+  },
+  "dependencies": {
+    "commander": "~2.0.0",
+    "prompt": "~0.2.11"
   }
 }
