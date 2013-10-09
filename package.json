@@ -24,6 +24,10 @@
   },
   "dependencies": {
     "commander": "~2.0.0",
-    "prompt": "~0.2.11"
+    "prompt": "~0.2.11",
+    "watch": "~0.8.0",
+    "nano": "~4.1.4",
+    "async": "~0.2.9",
+    "dive": "~0.3.0"
   }
 }
