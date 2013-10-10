@@ -49,3 +49,5 @@ To run the test suite first invoke the following command within the repo, instal
 then run the tests:
 
     npm test
+
+As of this writing, the test uses live data stored in the `demo` directory, and replicates with a live CouchDB instance living at `http://localhost:5984`. So, to run the tests, make sure you have an instance listening at that URL. I'll remove this warning once all the tests are properly mocked, at which point this won't be necessary.
