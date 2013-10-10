@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "garbados/quilt"
+    "url": "git@github.com:garbados/quilt.js.git"
   },
   "keywords": [
     "couchdb",
