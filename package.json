@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "Maps file directory to a Cloudant database",
   "main": "Gruntfile.js",
+  "bin": {
+    "quilt": "./bin/quilt"
+  },
   "directories": {
     "test": "tests"
   },
