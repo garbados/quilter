@@ -29,7 +29,10 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "~1.13.0",
-    "mocks": "0.0.15"
+    "mocks": "0.0.15",
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt": "~0.4.1",
+    "matchdep": "~0.3.0"
   },
   "dependencies": {
     "commander": "~2.0.0",
