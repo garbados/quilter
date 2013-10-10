@@ -1,7 +1,7 @@
 var mocks = require('mocks'),
     options = {
       good: {
-        mount: '.',
+        mount: 'demo',
         remote: 'http://localhost:5984/quilt',
       },
       bad: {
