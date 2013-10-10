@@ -20,7 +20,8 @@
   "author": "Max Thayer <garbados@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "~1.13.0"
+    "mocha": "~1.13.0",
+    "mocks": "0.0.15"
   },
   "dependencies": {
     "commander": "~2.0.0",

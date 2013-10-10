@@ -1,20 +1,24 @@
 var assert = require('assert'),
     fixtures = require('./fixtures'),
-    daemon = require('../tasks/daemon');
+    daemon = require('../index').daemon;
 
 describe('daemon', function () {
   describe('good opts', function () {
-    daemon(fixtures.mount, fixtures.remote);
+    var options = fixtures.options.good;
+    it('should succeed with good options', function () {
+      daemon(options.mount, options.remote);
+    });
   });
   describe('bad opts', function () {
+    var options = fixtures.options.bad;
     it('should fail if mount is missing', function () {
       try {
-        daemon(undefined, fixtures.remote); 
+        daemon(undefined, options.remote); 
       } catch (e) {}
     });
     it('should fail if remote is missing', function () {
       try {
-        daemon(fixtures.mount, undefined); 
+        daemon(options.mount, undefined); 
       } catch (e) {}
     });
     it('should fail if both args are missing', function () {

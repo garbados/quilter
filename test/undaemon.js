@@ -1,32 +1,34 @@
 var assert = require('assert'),
     fixtures = require('./fixtures'),
-    undaemon = require('../tasks/undaemon');
+    undaemon = require('../index').undaemon;
 
 describe('undaemon', function () {
   describe('good opts', function () {
+    var options = fixtures.options.good;
     it('should succeed if both arguments are present and valid', function () {
-      undaemon(fixtures.mount, fixtures.remote);
+      undaemon(options.mount, options.remote);
     });
     it('should succeed if either argument is not present', function () {
-      undaemon(fixtures.mount, undefined);
-      undaemon(undefined, fixtures.remote);
+      undaemon(options.mount, undefined);
+      undaemon(undefined, options.remote);
       undaemon(undefined, undefined);
     });
   });
   describe('bad opts', function () {
+    var options = fixtures.options.bad;
     it('should fail if both arguments are not valid', function () {
       try {
-        undaemon(fixtures.bad_mount, fixtures.bad_remote);
+        undaemon(options.mount, options.remote);
       } catch (e) {}
     });
     it('should fail if remote is not valid', function () {
       try {
-        undaemon(undefined, fixtures.bad_remote);
+        undaemon(undefined, options.remote);
       } catch (e) {}
     });
     it('should fail if mount is not valid', function () {
       try {
-        undaemon(fixtures.bad_mount, undefined);
+        undaemon(options.mount, undefined);
       } catch (e) {}
     });
   });
