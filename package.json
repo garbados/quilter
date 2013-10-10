@@ -1,5 +1,5 @@
 {
-  "name": "quilt",
+  "name": "quilter",
   "version": "0.0.0",
   "description": "Maps file directory to a Cloudant database",
   "main": "Gruntfile.js",

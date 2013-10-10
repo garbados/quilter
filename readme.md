@@ -4,7 +4,7 @@ Maps a file directory to a CouchDB / Cloudant database.
 
 ## Installation
 
-    sudo npm install -g quilt
+    sudo npm install -g quilter
     quilt init
     # tell quilt what to watch, and where to put it
 
