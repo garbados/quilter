@@ -16,7 +16,7 @@ For more help, run `quilt -h`.
 
 ## Dashboard
 
-**[In Development](https://github.com/garbados/quilter/issues/3)**
+**This feature is [in Development](https://github.com/garbados/quilter/issues/3)**
 
 Quilt comes with a dashboard app that lives in whatever instances you sync your files with. This lets you explore, upload, download, and share files. To visit it, launch Quilt, and then go to `_design/dash/_rewrite` in your remote instance. Here's a screenshot:
 
