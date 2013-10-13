@@ -6,4 +6,4 @@ module.exports = function (mount, remote) {
   } else {
     Quilt(mount, remote);
   }
-}
+};

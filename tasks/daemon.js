@@ -4,4 +4,4 @@ module.exports = function (mount, remote) {
   } else {
     console.log('you did it!');
   }
-}
+};
