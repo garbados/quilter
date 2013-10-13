@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Maps file directory to a Cloudant database",
   "main": "Gruntfile.js",
+  "preferGlobal": "true",
   "bin": {
     "quilt": "./bin/quilt"
   },
@@ -40,6 +41,7 @@
     "watch": "~0.8.0",
     "nano": "~4.1.4",
     "async": "~0.2.9",
-    "dive": "~0.3.0"
+    "dive": "~0.3.0",
+    "underscore": "~1.5.2"
   }
 }
