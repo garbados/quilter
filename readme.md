@@ -18,6 +18,8 @@ Or, even shorter:
 
 ## Quilting on Startup
 
+**This feature is [in development](https://github.com/garbados/quilter/issues/2).**
+
     quilt daemon
     # tell quilt what to watch, and where to put it    
 
@@ -50,4 +52,6 @@ then run the tests:
 
     npm test
 
-As of this writing, the test uses live data stored in the `demo` directory, and replicates with a live CouchDB instance living at `http://localhost:5984`. So, to run the tests, make sure you have an instance listening at that URL. I'll remove this warning once all the tests are properly mocked, at which point this won't be necessary.
+As of this writing, the test uses live data stored in the `demo` directory, and replicates with a live CouchDB instance living at `http://localhost:5984`. So, to run the tests, make sure you have an instance listening at that URL. 
+
+HTTP and filesystem mocks are [in development](https://github.com/garbados/quilter/issues/1).
