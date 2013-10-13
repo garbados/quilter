@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Quilter by garbados</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Quilter</h1>
+        <h2>Map a file directory to a CouchDB / Cloudant instance.</h2>
+        <a href="https://github.com/garbados/quilter" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="quilt---" class="anchor" href="#quilt---"><span class="octicon octicon-link"></span></a>Quilt <a href="http://travis-ci.org/garbados/quilter"><img src="https://secure.travis-ci.org/garbados/quilter.png?branch=master" alt="Build Status"></a> <a href="http://waffle.io/garbados/quilter"><img src="https://badge.waffle.io/garbados/quilter.png?label=ready" alt="Stories in Ready"></a> <a href="http://badge.fury.io/js/quilter"><img src="https://badge.fury.io/js/quilter.png" alt="NPM version"></a>
+</h1>
+
+<p>Maps a file directory to a CouchDB / Cloudant database.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<pre><code>sudo npm install -g quilter
+quilt init
+# tell quilt what to watch, and where to put it
+</code></pre>
+
+<p>That's it! Quilt will watch any files in the folder you tell it to watch, and push them to the remote instance whenever they change. Or, you can do this to avoid any prompting:</p>
+
+<pre><code>quilt init --mount {folder} --remote {url}
+</code></pre>
+
+<p>Or, even shorter:</p>
+
+<pre><code>quilt init -m {folder} -r {url}
+</code></pre>
+
+<h2>
+<a name="quilting-on-startup" class="anchor" href="#quilting-on-startup"><span class="octicon octicon-link"></span></a>Quilting on Startup</h2>
+
+<p><strong>This feature is <a href="https://github.com/garbados/quilter/issues/2">in development</a>.</strong></p>
+
+<pre><code>quilt daemon
+# tell quilt what to watch, and where to put it    
+</code></pre>
+
+<p>Then, when you start your computer, quilt will start watching your files automatically. <code>quilt daemon</code> can use the <code>--mount</code> and <code>--remote</code> options like <code>quilt init</code> to skip prompting.</p>
+
+<p>To stop quilt from autostarting, do this:</p>
+
+<pre><code>quilt undaemon
+</code></pre>
+
+<p>Without any options, this will remove all <code>quilt</code> commands from automatically starting. Use <code>--mount</code> and <code>--remote</code> to remove only the commands that watch the given folder, and/or push to the given remote instance.</p>
+
+<h2>
+<a name="commands" class="anchor" href="#commands"><span class="octicon octicon-link"></span></a>Commands</h2>
+
+<ul>
+<li>
+<code>quilt init</code>: Starts mapping a file directory to a CouchDB / Cloudant instance. If the mountpoint and remote instance are not given as command-line options, the command will prompt for them.</li>
+<li>
+<code>quilt daemon</code>: Adds a quilt command to run on startup. If the mountpoint and remote instance are not given as command-line options, the command will prompt for them.</li>
+<li>
+<code>quilt undaemon</code>: Removes any quilt commands from running on startup. If <code>-m</code> or <code>-r</code> options are used, <code>undaemon</code> will only remove matching commands.</li>
+</ul><h2>
+<a name="options" class="anchor" href="#options"><span class="octicon octicon-link"></span></a>Options</h2>
+
+<ul>
+<li>
+<code>--mount</code> or <code>-m</code>: Indicates the folder to watch. Can be either a relative or direct path, ex: "~/Documents"</li>
+<li>
+<code>--remote</code> or <code>-r</code>: Indicates where to push files when they change. Must be a full URL, like <code>https://garbados.cloudant.com/quilt</code>.</li>
+</ul><h2>
+<a name="testing" class="anchor" href="#testing"><span class="octicon octicon-link"></span></a>Testing</h2>
+
+<p>To run the test suite first invoke the following command within the repo, installing the development dependencies:</p>
+
+<pre><code>npm install
+</code></pre>
+
+<p>then run the tests:</p>
+
+<pre><code>npm test
+</code></pre>
+
+<p>As of this writing, the test uses live data stored in the <code>demo</code> directory, and replicates with a live CouchDB instance living at <code>http://localhost:5984</code>. So, to run the tests, make sure you have an instance listening at that URL. </p>
+
+<p>HTTP and filesystem mocks are <a href="https://github.com/garbados/quilter/issues/1">in development</a>.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/garbados/quilter/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/garbados/quilter/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/garbados/quilter"></a> is maintained by <a href="https://github.com/garbados">garbados</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
