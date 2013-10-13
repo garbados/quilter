@@ -12,9 +12,13 @@ That's it! Quilt will watch any files in the folder you tell it to watch, and pu
 
     quilt init --mount {folder} --remote {url}
 
-Or, even shorter:
+For more help, run `quilt -h`.
 
-    quilt init -m {folder} -r {url}
+## Dashboard
+
+**[In Development](https://github.com/garbados/quilter/issues/3)**
+
+Quilt comes with a dashboard app that lives in whatever instances you sync your files with. This lets you explore, upload, download, and share files. To visit it, launch Quilt, and then go to `_design/dash/_rewrite` in your remote instance. Here's a screenshot:
 
 ## Quilting on Startup
 
@@ -31,27 +35,10 @@ To stop quilt from autostarting, do this:
 
 Without any options, this will remove all `quilt` commands from automatically starting. Use `--mount` and `--remote` to remove only the commands that watch the given folder, and/or push to the given remote instance.
 
-## Commands
+## Tests
 
-* `quilt init`: Starts mapping a file directory to a CouchDB / Cloudant instance. If the mountpoint and remote instance are not given as command-line options, the command will prompt for them.
-* `quilt daemon`: Adds a quilt command to run on startup. If the mountpoint and remote instance are not given as command-line options, the command will prompt for them.
-* `quilt undaemon`: Removes any quilt commands from running on startup. If `-m` or `-r` options are used, `undaemon` will only remove matching commands.
+The tests sync data with a live CouchDB instance running at `http://localhost:5984`. So, to run the tests, make sure you have an instance listening at that URL.
 
-## Options
-
-* `--mount` or `-m`: Indicates the folder to watch. Can be either a relative or direct path, ex: "~/Documents"
-* `--remote` or `-r`: Indicates where to push files when they change. Must be a full URL, like `https://garbados.cloudant.com/quilt`.
-
-## Testing
-
-To run the test suite first invoke the following command within the repo, installing the development dependencies:
-
-    npm install
-
-then run the tests:
-
-    npm test
-
-As of this writing, the test uses live data stored in the `demo` directory, and replicates with a live CouchDB instance living at `http://localhost:5984`. So, to run the tests, make sure you have an instance listening at that URL. 
+To run the tests, do `npm test`.
 
 HTTP and filesystem mocks are [in development](https://github.com/garbados/quilter/issues/1).
