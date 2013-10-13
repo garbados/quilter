@@ -1,4 +1,4 @@
-# Quilt [![Build Status](https://secure.travis-ci.org/garbados/quilt.js.png?branch=master)](http://travis-ci.org/garbados/quilt.js) [![Stories in Ready](https://badge.waffle.io/garbados/quilt.js.png?label=ready)](http://waffle.io/garbados/quilt.js) [![NPM version](https://badge.fury.io/js/quilter.png)](http://badge.fury.io/js/quilter)
+# Quilt [![Build Status](https://secure.travis-ci.org/garbados/quilt.js.png?branch=master)](http://travis-ci.org/garbados/quilt.js) [![NPM version](https://badge.fury.io/js/quilter.png)](http://badge.fury.io/js/quilter)
 
 Maps a file directory to a CouchDB / Cloudant database.
 
