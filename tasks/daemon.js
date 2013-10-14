@@ -8,7 +8,7 @@ function cron (mount, remote, done) {
     if (err) { console.log(err); process.exit(1); }
 
     var command = [
-      'sleep 10 &&', // wait for http interface to start working
+      'sleep 5 &&', // wait for http interface to start working
       process.execPath,
       path.normalize(path.join(__dirname, '..', 'bin', 'quilt.js')),
       'init',
