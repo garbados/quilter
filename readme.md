@@ -22,8 +22,6 @@ Quilt comes with a dashboard app that lives in whatever instances you sync your 
 
 ## Quilting on Startup
 
-**This feature is [in development](https://github.com/garbados/quilter/issues/2).**
-
     quilt daemon
     # tell quilt what to watch, and where to put it    
 
@@ -33,7 +31,7 @@ To stop quilt from autostarting, do this:
 
     quilt undaemon
 
-Without any options, this will remove all `quilt` commands from automatically starting. Use `--mount` and `--remote` to remove only the commands that watch the given folder, and/or push to the given remote instance.
+That will remove any commands that watch the given `--mount` and `--remote` folders.
 
 ## Tests
 
