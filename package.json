@@ -2,7 +2,7 @@
   "name": "quilter",
   "version": "0.1.3",
   "description": "Maps file directory to a Cloudant database",
-  "main": "Gruntfile.js",
+  "main": "./lib/index.js",
   "bin": {
     "quilt": "./bin/quilt"
   },
