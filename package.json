@@ -5,7 +5,7 @@
   "main": "Gruntfile.js",
   "preferGlobal": "true",
   "bin": {
-    "quilt": "./bin/quilt"
+    "quilt": "./bin/quilt.js"
   },
   "directories": {
     "test": "tests"
@@ -43,6 +43,7 @@
     "async": "~0.2.9",
     "dive": "~0.3.0",
     "underscore": "~1.5.2",
-    "mime": "~1.2.11"
+    "mime": "~1.2.11",
+    "crontab": "~0.3.4"
   }
 }
