@@ -1,6 +1,6 @@
 # Quilt [![Build Status](https://secure.travis-ci.org/garbados/quilter.png?branch=master)](http://travis-ci.org/garbados/quilter) [![Stories in Ready](https://badge.waffle.io/garbados/quilter.png?label=ready)](http://waffle.io/garbados/quilter) [![NPM version](https://badge.fury.io/js/quilter.png)](http://badge.fury.io/js/quilter)
 
-Maps a file directory to a CouchDB / Cloudant database.
+Maps a file directory to a CouchDB / Cloudant database. Which is to say, it's an open-source Dropbox.
 
 ## Installation
 
