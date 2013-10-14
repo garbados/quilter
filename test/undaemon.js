@@ -5,30 +5,25 @@ var assert = require('assert'),
 describe('undaemon', function () {
   describe('good opts', function () {
     var options = fixtures.options.good;
-    it('should succeed if both arguments are present and valid', function () {
+    it('should succeed with good options', function () {
       undaemon(options.mount, options.remote);
-    });
-    it('should succeed if either argument is not present', function () {
-      undaemon(options.mount, undefined);
-      undaemon(undefined, options.remote);
-      undaemon(undefined, undefined);
     });
   });
   describe('bad opts', function () {
     var options = fixtures.options.bad;
-    it('should fail if both arguments are not valid', function () {
+    it('should fail if mount is missing', function () {
       try {
-        undaemon(options.mount, options.remote);
+        undaemon(undefined, options.remote); 
       } catch (e) {}
     });
-    it('should fail if remote is not valid', function () {
+    it('should fail if remote is missing', function () {
       try {
-        undaemon(undefined, options.remote);
+        undaemon(options.mount, undefined); 
       } catch (e) {}
     });
-    it('should fail if mount is not valid', function () {
+    it('should fail if both args are missing', function () {
       try {
-        undaemon(options.mount, undefined);
+        undaemon(undefined, undefined); 
       } catch (e) {}
     });
   });

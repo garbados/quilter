@@ -1,6 +1,4 @@
-var _ = require('underscore'),
-    fs = require('fs'),
-    path = require('path'),
+var path = require('path'),
     exec = require('child_process').exec;
 
 function cron (mount, remote, done) {
@@ -17,7 +15,7 @@ function cron (mount, remote, done) {
       '-r', 
       remote
     ].join(' ');
-    tab.remove(tab.findCommand(command));
+    tab.remove(tab.findCommand(command)); 
 
     var item = tab.create(command);
     item.everyReboot();
@@ -40,6 +38,7 @@ module.exports = function (mount, remote) {
         break;
       case 'win32':
         // windows
+        throw new Error('Not Implemented :(');
         break;
       case 'linux':
         // linux, surprise surprise
