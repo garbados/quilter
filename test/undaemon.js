@@ -1,30 +1,36 @@
 var assert = require('assert'),
     fixtures = require('./fixtures'),
-    undaemon = require('../lib').Daemon.destroy;
+    spawn = require('child_process').spawn;
 
 describe('undaemon', function () {
   describe('good opts', function () {
-    var options = fixtures.options.good;
+    var options = fixtures.options.good,
+        cmd = fixtures.getCmd('undaemon', options),
+        child = spawn(cmd);
     it('should succeed with good options', function () {
-      undaemon(options.mount, options.remote);
+      var errors = [];
+      
+      child.stderr.on('data', function (data) {
+        errors.push(data);
+      });
+
+      child.on('close', function () {
+        assert(!errors.length, "Got errors >:(");
+      });
     });
   });
   describe('bad opts', function () {
-    var options = fixtures.options.bad;
-    it('should fail if mount is missing', function () {
-      try {
-        undaemon(undefined, options.remote); 
-      } catch (e) {}
-    });
-    it('should fail if remote is missing', function () {
-      try {
-        undaemon(options.mount, undefined); 
-      } catch (e) {}
-    });
-    it('should fail if both args are missing', function () {
-      try {
-        undaemon(undefined, undefined); 
-      } catch (e) {}
+    var options = fixtures.options.bad,
+        cmd = fixtures.getCmd('undaemon', options),
+        child = spawn(cmd);
+    it('should fail', function () {
+      var errors = [];
+      child.stderr.on('data', function (data) {
+        errors.push(data);
+      });
+      child.on('close', function () {
+        assert(errors.length, "Did not throw an error >:(");
+      })
     });
   });
 });

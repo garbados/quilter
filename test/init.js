@@ -1,30 +1,46 @@
 var assert = require('assert'),
     fixtures = require('./fixtures'),
-    Quilt = require('../lib').Quilt;
+    spawn = require('child_process').spawn,
+    nano = require('nano');
 
 describe('Quilt', function () {
   describe('good opts', function () {
-    var options = fixtures.options.good;
-    it('should succeed with good options', function () {
-      Quilt(options.mount, options.remote).start();
+    var options = fixtures.options.good,
+        cmd = fixtures.getCmd('init', options),
+        child = spawn(cmd),
+        db = nano(options.remote);
+
+    it('should sync `hello` with the server', function () {
+      // give the child time to sync
+      setTimeout(function () {
+        db.get('hello', function (err, res) {
+          if (err) throw err;
+          if (res.status_code !== 200) throw new Error('could not find `hello`');
+        });
+      }, 3000);
+    });
+
+    it('should not error out', function () {
+      child.stderr.on('data', function (data) {
+        console.log(data.toString());
+        throw new Error('Threw error >:(');
+      });
     });
   });
   describe('bad opts', function () {
-    var options = fixtures.options.bad;
-    it('should fail if mount is missing', function () {
-      try {
-        Quilt(undefined, options.remote).start(); 
-      } catch (e) {}
-    });
-    it('should fail if remote is missing', function () {
-      try {
-        Quilt(options.mount, undefined).start(); 
-      } catch (e) {}
-    });
-    it('should fail if both args are missing', function () {
-      try {
-        Quilt(undefined, undefined).start(); 
-      } catch (e) {}
+    var options = fixtures.options.bad,
+        cmd = fixtures.getCmd('init', options),
+        child = spawn(cmd);
+    it('should fail', function () {
+      var errors = [];
+      
+      child.stderr.on('data', function (data) {
+        errors.push(data);
+      });
+      
+      child.on('close', function () {
+        assert(errors.length, "Didn't throw errors >:(");
+      });
     });
   });
 });
