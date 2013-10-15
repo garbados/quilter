@@ -1,14 +1,13 @@
 var assert = require('assert'),
-    fixtures = require('./fixtures'),
-    spawn = require('child_process').spawn;
+    fixtures = require('./fixtures');
 
 describe('undaemon', function () {
   describe('good opts', function () {
 
     beforeEach(function() {
-      var options = fixtures.options.good,
-          cmd = fixtures.getCmd('undaemon', options);
-      this.child = spawn(cmd.cmd, cmd.args);
+      var options = fixtures.options.good;
+
+      this.child = fixtures.getChild('undaemon', options);
     });
 
     afterEach(function() {
@@ -29,10 +28,9 @@ describe('undaemon', function () {
   });
   describe('bad opts', function () {
     beforeEach(function() {
-      var options = fixtures.options.bad,
-          cmd = fixtures.getCmd('undaemon', options);
+      var options = fixtures.options.bad;
 
-      this.child = spawn(cmd.cmd, cmd.args);
+      this.child = fixtures.getChild('undaemon', options);
     });
 
 

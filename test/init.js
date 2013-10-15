@@ -1,15 +1,14 @@
 var assert = require('assert'),
     fixtures = require('./fixtures'),
-    spawn = require('child_process').spawn,
     nano = require('nano');
 
 describe('Quilt', function () {
   describe('good opts', function () {
     beforeEach(function() {
       var options = fixtures.options.good;
-      var cmd = fixtures.getCmd('init', options);
+
+      this.child = fixtures.getChild('init', options);
       this.db = nano(options.remote);
-      this.child = spawn(cmd.cmd, cmd.args);
     });
     
     afterEach(function() {
@@ -28,17 +27,15 @@ describe('Quilt', function () {
 
     it('should not error out', function () {
       this.child.stderr.on('data', function (data) {
-        console.log(data.toString());
-        throw new Error('Threw error >:(');
+        throw new Error('Threw error: ' + data.toString());
       });
     });
   });
   describe('bad opts', function () {
     beforeEach(function() {
-      var options = fixtures.options.bad,
-          cmd = fixtures.getCmd('init', options);
+      var options = fixtures.options.bad;
 
-      this.child = spawn(cmd.cmd, cmd.args);
+      this.child = fixtures.getChild('init', options);
     });
 
     it('should fail', function () {
