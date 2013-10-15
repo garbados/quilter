@@ -1,29 +1,29 @@
 var assert = require('assert'),
     fixtures = require('./fixtures'),
-    init = require('../index').init;
+    Quilt = require('../lib').Quilt;
 
-describe('init', function () {
+describe('Quilt', function () {
   describe('good opts', function () {
     var options = fixtures.options.good;
     it('should succeed with good options', function () {
-      init(options.mount, options.remote);
+      Quilt(options.mount, options.remote).start();
     });
   });
   describe('bad opts', function () {
     var options = fixtures.options.bad;
     it('should fail if mount is missing', function () {
       try {
-        init(undefined, options.remote); 
+        Quilt(undefined, options.remote).start(); 
       } catch (e) {}
     });
     it('should fail if remote is missing', function () {
       try {
-        init(options.mount, undefined); 
+        Quilt(options.mount, undefined).start(); 
       } catch (e) {}
     });
     it('should fail if both args are missing', function () {
       try {
-        init(undefined, undefined); 
+        Quilt(undefined, undefined).start(); 
       } catch (e) {}
     });
   });

@@ -3,7 +3,9 @@
 var program = require('commander'),
     prompt = require('prompt'),
     pkg = require('../package.json'),
-    quilt = require('../index');
+    daemon = require('../lib').Daemon,
+    forever = require('forever-monitor'),
+    path = require('path');
 
 // prompts for options if they weren't passed
 function promptForOptions (obj, cb) {
@@ -36,7 +38,19 @@ program
   .description('Start syncing local files with remote instance.')
   .action(function () {
     promptForOptions(program, function (program) {
-      quilt.init(program.mount, program.remote);
+      var child = forever.start([
+        process.execPath,
+        path.resolve(__dirname, './quilt-init.js'), 
+        path.resolve(program.mount),
+        program.remote
+      ], {
+        max: 3,
+        silent: false
+      });
+
+      child.on('exit', function () {
+        console.log('Quilt finished.')
+      });
     });
   });
 
@@ -46,7 +60,7 @@ program
   .description('Register quilt to autorun when system starts.')
   .action(function () {
     promptForOptions(program, function (program) {
-      quilt.daemon(program.mount, program.remote);
+      daemon.create(program.mount, program.remote);
     });
   });
 
@@ -55,8 +69,16 @@ program
   .command('undaemon')
   .description('Unregister quilt from autorunning when system starts.')
   .action(function () {
-    quilt.undaemon(program.mount, program.remote);
+    daemon.destroy(program.mount, program.remote);
   });
+
+// catch all
+program
+  .command('*')
+  .action(function (){
+    console.log(arguments);
+    console.log(program);
+});
 
 // start!
 program
