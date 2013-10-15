@@ -4,31 +4,45 @@ var assert = require('assert'),
 
 describe('undaemon', function () {
   describe('good opts', function () {
-    var options = fixtures.options.good,
-        cmd = fixtures.getCmd('undaemon', options),
-        child = spawn(cmd);
+
+    beforeEach(function() {
+      var options = fixtures.options.good,
+          cmd = fixtures.getCmd('undaemon', options);
+      this.child = spawn(cmd.cmd, cmd.args);
+    });
+
+    afterEach(function() {
+      this.child.kill();
+    });
+
     it('should succeed with good options', function () {
       var errors = [];
       
-      child.stderr.on('data', function (data) {
+      this.child.stderr.on('data', function (data) {
         errors.push(data);
       });
 
-      child.on('close', function () {
+      this.child.on('close', function () {
         assert(!errors.length, "Got errors >:(");
       });
     });
   });
   describe('bad opts', function () {
-    var options = fixtures.options.bad,
-        cmd = fixtures.getCmd('undaemon', options),
-        child = spawn(cmd);
+    beforeEach(function() {
+      var options = fixtures.options.bad,
+          cmd = fixtures.getCmd('undaemon', options);
+
+      this.child = spawn(cmd.cmd, cmd.args);
+    });
+
+
     it('should fail', function () {
       var errors = [];
-      child.stderr.on('data', function (data) {
+      this.child.stderr.on('data', function (data) {
         errors.push(data);
       });
-      child.on('close', function () {
+
+      this.child.on('close', function () {
         assert(errors.length, "Did not throw an error >:(");
       })
     });
