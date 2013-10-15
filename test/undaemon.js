@@ -1,6 +1,6 @@
 var assert = require('assert'),
     fixtures = require('./fixtures'),
-    undaemon = require('../index').undaemon;
+    undaemon = require('../lib').Daemon.destroy;
 
 describe('undaemon', function () {
   describe('good opts', function () {

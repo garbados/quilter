@@ -1,6 +1,6 @@
 var assert = require('assert'),
     fixtures = require('./fixtures'),
-    daemon = require('../index').daemon;
+    daemon = require('../lib').Daemon.create;
 
 describe('daemon', function () {
   describe('good opts', function () {
