@@ -11,14 +11,16 @@ var path = require('path'),
     };
 
 function getCmd (action, opts) {
-  return [
-    path.normalize(path.join(__dirname, '..', 'bin', 'quilt.js')),
-    action,
-    '-m', 
-    path.resolve(opts.mount),
-    '-r', 
-    opts.remote
-  ].join('\ ');
+    return  {
+        cmd : path.normalize(path.join(__dirname, '..', 'bin', 'quilt.js')),
+        args: [
+            action,
+            '-m', 
+            path.resolve(opts.mount),
+            '-r', 
+            opts.remote
+          ]
+    }
 }
 
 module.exports = {
