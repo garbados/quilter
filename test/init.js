@@ -7,7 +7,7 @@ describe('Quilt', function () {
   describe('good opts', function () {
     var options = fixtures.options.good,
         cmd = fixtures.getCmd('init', options),
-        child = spawn(cmd),
+        child = spawn(cmd.cmd, cmd.args),
         db = nano(options.remote);
 
     it('should sync `hello` with the server', function () {
