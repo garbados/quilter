@@ -24,7 +24,8 @@
     "files",
     "sync",
     "replicate",
-    "replication"
+    "replication",
+    "edgewise"
   ],
   "author": "Max Thayer <garbados@gmail.com>",
   "license": "MIT",
@@ -33,7 +34,8 @@
     "mocks": "0.0.15",
     "grunt-contrib-jshint": "~0.6.4",
     "grunt": "~0.4.1",
-    "matchdep": "~0.3.0"
+    "matchdep": "~0.3.0",
+    "couchapp": "~0.10.0"
   },
   "dependencies": {
     "commander": "~2.0.0",

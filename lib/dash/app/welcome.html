@@ -1,0 +1,13 @@
+<header class="jumbotron">
+  <h1>Welcome!</h1>
+</header>
+<div ng-repeat="file in files" class="col-md-12">
+  <div class="row">
+    <div class="col-md-9">
+      <a href="{{ file.url }}">{{ file.id }}</a>
+    </div>
+    <div class="col-md-3">
+      {{ file.date | date }}
+    </div>
+  </div>
+</div>
