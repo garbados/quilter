@@ -44,6 +44,7 @@
     "dive": "~0.3.0",
     "underscore": "~1.5.2",
     "mime": "~1.2.11",
-    "crontab": "~0.3.4"
+    "crontab": "~0.3.4",
+    "forever-monitor": "~1.2.3"
   }
 }
