@@ -16,9 +16,16 @@ For more help, run `quilt -h`.
 
 ## Dashboard
 
-**This feature is [in development](https://github.com/garbados/quilter/issues/3).**
-
 Quilt comes with a dashboard app that lives in whatever instances you sync your files with. This lets you explore, upload, download, and share files. To visit it, launch Quilt, and then go to `_design/dash/_rewrite` in your remote instance. Here's a screenshot:
+
+![dashboard!](http://eggchair.maxthayer.org/img/Screen%20Shot%202013-10-18%20at%206.44.11%20PM.png)
+
+To load up the dashboard into a given Quilt, do this:
+
+    quilt dash
+    # tell quilt where to push the dashboard
+
+Or, you can do `quilt dash -r {dash}` to skip the prompting.
 
 ## Quilting on Startup
 
