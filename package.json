@@ -1,6 +1,6 @@
 {
   "name": "quilter",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Maps file directory to a Cloudant database",
   "preferGlobal": "true",
   "main": "./lib/index.js",
