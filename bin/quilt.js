@@ -44,12 +44,19 @@ program
         path.resolve(program.mount),
         program.remote
       ], {
-        max: 3,
-        silent: false
+        max: Infinity,
+        silent: false,
+        spinSleepTime: 60000,
+        minUptime: 3000,
+        killTree: true
+      });
+
+      child.on('restart', function () {
+        console.log('Quilt died. Restarting...');
       });
 
       child.on('exit', function () {
-        console.log('Quilt finished.')
+        console.log('Quilt finished.');
       });
     });
   });
