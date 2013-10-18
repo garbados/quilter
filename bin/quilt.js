@@ -5,14 +5,20 @@ var program = require('commander'),
     pkg = require('../package.json'),
     daemon = require('../lib').Daemon,
     forever = require('forever-monitor'),
-    path = require('path');
+    path = require('path'),
+    couchapp = require('couchapp'),
+    Dash = require('../lib').Dash;
 
 // prompts for options if they weren't passed
-function promptForOptions (obj, cb) {
+function promptForOptions (obj, fields, cb) {
+  if (typeof(fields) === 'function') {
+    cb = fields;
+    fields = ['mount', 'remote'];
+  }
   var properties = [];
   prompt.start();
 
-  ['mount', 'remote'].forEach(function (val) {
+  fields.forEach(function (val) {
     if (!obj[val]) properties.push(val);
   });
 
@@ -77,6 +83,22 @@ program
   .description('Unregister quilt from autorunning when system starts.')
   .action(function () {
     daemon.destroy(program.mount, program.remote);
+  });
+
+// upload dash
+program
+  .command('dash')
+  .description('Upload the Quilt dashboard to the database.')
+  .action(function () {
+    promptForOptions(program, ['remote'], function (program) {
+      couchapp.createApp(Dash, program.remote, function (app) {
+        app.push(function () {
+          console.log('');
+          console.log('Dashboard uploaded!');
+          console.log('Visit it at', [program.remote, Dash._id, 'index.html'].join('/'));
+        });
+      });
+    });
   });
 
 // catch all
