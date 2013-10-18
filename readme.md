@@ -22,7 +22,7 @@ Quilt comes with a dashboard app that lives in whatever instances you sync your 
 
 ## Quilting on Startup
 
-**This feature is [kind of finicky](https://github.com/garbados/quilter/issues/12)**
+If you want to start quilting when your computer starts, do this:
 
     quilt daemon
     # tell quilt what to watch, and where to put it    
