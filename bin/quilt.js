@@ -45,9 +45,9 @@ program
         program.remote
       ], {
         max: Infinity,
-        silent: false,
+        silent: true,
         spinSleepTime: 60000,
-        minUptime: 3000,
+        minUptime: 1000,
         killTree: true
       });
 
