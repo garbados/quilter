@@ -35,6 +35,7 @@ function promptForOptions (obj, fields, cb) {
 program
   .version(pkg.version)
   .usage('[action] [options]')
+  .option('-v, --verbose', 'Enable verbose logging.')
   .option('-m, --mount [dir]', 'File directory to watch for changes.')
   .option('-r, --remote [url]', 'CouchDB / Cloudant instance to sync with.');
 
@@ -51,7 +52,7 @@ program
         program.remote
       ], {
         max: Infinity,
-        silent: true,
+        silent: !program.verbose,
         spinSleepTime: 60000,
         minUptime: 1000,
         killTree: true
