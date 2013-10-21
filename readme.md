@@ -12,7 +12,7 @@ That's it! Quilt will watch any files in the folder you tell it to watch, and pu
 
     quilt init --mount {folder} --remote {url}
 
-For more help, run `quilt -h`.
+For more help, run `quilt -h`. To enable logging, run `quilt init` with the `-v` or `--verbose` options.
 
 ## Dashboard
 
