@@ -34,8 +34,7 @@
     "mocks": "0.0.15",
     "grunt-contrib-jshint": "~0.6.4",
     "grunt": "~0.4.1",
-    "matchdep": "~0.3.0",
-    "couchapp": "~0.10.0"
+    "matchdep": "~0.3.0"
   },
   "dependencies": {
     "commander": "~2.0.0",
@@ -47,6 +46,7 @@
     "underscore": "~1.5.2",
     "mime": "~1.2.11",
     "crontab": "~0.3.4",
-    "forever-monitor": "~1.2.3"
+    "forever-monitor": "~1.2.3",
+    "couchapp": "~0.10.0"
   }
 }
