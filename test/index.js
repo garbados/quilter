@@ -8,7 +8,7 @@ var winston = require('winston');
 winston.level = 'warn';
 
 // TODO not run any jobs with `watch: true` if `nowatch` is true.
-// TODO not run saved jobs if `source` and `target` are set.
+// TODO not run saved jobs if `local` and `remote` are set.
 // TODO quilt will not break when connectivity to a database is lost or interrupted
 // TODO quilt will resume any active jobs when connectivity is re-established
 
@@ -16,9 +16,9 @@ describe('[push, pull, sync]', function () {
   var instance = 'http://localhost:5984'; 
   var nano_instance = nano(instance);
   var db = 'test';
-  var target = [instance, db].join('/');
-  var source1 = '.test1';
-  var source2 = '.test2';
+  var remote = [instance, db].join('/');
+  var local1 = '.test1';
+  var local2 = '.test2';
   var file = '/derp.md';
   var other_file = '/herp.md';
   var content = '# hello';
@@ -26,11 +26,11 @@ describe('[push, pull, sync]', function () {
   before(function (done) {
     async.series([
       async.parallel.bind(async, [
-        source1,
-        source2
-      ].map(function (source) {
+        local1,
+        local2
+      ].map(function (local) {
         return function (done) {
-          fs.mkdir(source, function (err) {
+          fs.mkdir(local, function (err) {
             if (err && err.code === 'EEXIST') {
               done();
             } else {
@@ -40,8 +40,8 @@ describe('[push, pull, sync]', function () {
         };
       })),
       async.parallel.bind(async, [
-        source2 + file,
-        source1 + other_file
+        local2 + file,
+        local1 + other_file
       ].map(function (filepath) {
         return function (done) {
           fs.writeFile(filepath, content, function (err) {
@@ -55,14 +55,14 @@ describe('[push, pull, sync]', function () {
   after(function (done) {
     async.series([
       async.parallel.bind(async, [
-        fs.unlink.bind(fs, source2 + file),
-        fs.unlink.bind(fs, source1 + file),
-        fs.unlink.bind(fs, source2 + other_file),
-        fs.unlink.bind(fs, source1 + other_file),
+        fs.unlink.bind(fs, local2 + file),
+        fs.unlink.bind(fs, local1 + file),
+        fs.unlink.bind(fs, local2 + other_file),
+        fs.unlink.bind(fs, local1 + other_file),
       ]),
       async.parallel.bind(async, [
-        fs.rmdir.bind(fs, source1),
-        fs.rmdir.bind(fs, source2)
+        fs.rmdir.bind(fs, local1),
+        fs.rmdir.bind(fs, local2)
       ]),
       nano_instance.db.destroy.bind(nano_instance.db, db)
     ], done);
@@ -72,18 +72,18 @@ describe('[push, pull, sync]', function () {
     before(function (done) {
       async.series([
         quilter.pull.bind(quilter, {
-          target: target,
-          source: source1
+          remote: remote,
+          local: local1
         }),
         quilter.push.bind(quilter, {
-          target: target,
-          source: source2
+          remote: remote,
+          local: local2
         })
       ], done);
     });
 
     it('will reflect changes to the latter\'s filesystem', function (done) {
-      fs.readFile(source2 + file, function (err, buffer) {
+      fs.readFile(local2 + file, function (err, buffer) {
         assert(!err, 'threw errors: ' + err);
         assert(buffer.toString().indexOf(content) > -1, 'incorrect file content: ' + buffer.toString());
         done();
@@ -92,7 +92,7 @@ describe('[push, pull, sync]', function () {
 
     // TODO fix
     // it('will not affect the latter\'s filesystem', function (done) {
-    //   fs.readFile(source1 + other_file, function (err) {
+    //   fs.readFile(local1 + other_file, function (err) {
     //     assert(err, 'file should not exist');
     //     done();
     //   });
@@ -103,18 +103,18 @@ describe('[push, pull, sync]', function () {
     before(function (done) {
       async.series([
         quilter.sync.bind(quilter, {
-          target: target,
-          source: source1
+          remote: remote,
+          local: local1
         }),
         quilter.sync.bind(quilter, {
-          target: target,
-          source: source2
+          remote: remote,
+          local: local2
         })
       ], done);
     });
 
     it('will pull changes from the latter\'s filesystem', function (done) {
-      fs.readFile(source2 + file, function (err, buffer) {
+      fs.readFile(local2 + file, function (err, buffer) {
         assert(!err, 'threw errors: ' + err);
         assert(buffer.toString().indexOf(content) > -1, 'incorrect file content: ' + buffer.toString());
         done();
@@ -122,7 +122,7 @@ describe('[push, pull, sync]', function () {
     });
 
     it('will push local changes to the latter\'s filesystem', function (done) {
-      fs.readFile(source1 + other_file, function (err, buffer) {
+      fs.readFile(local1 + other_file, function (err, buffer) {
         assert(!err, 'threw errors: ' + err);
         assert(buffer.toString().indexOf(content) > -1, 'incorrect file content: ' + buffer.toString());
         done();
@@ -155,8 +155,8 @@ describe('[push, pull, sync] [watch: true]', function () {
 
 describe('[save, jobs]', function () {
   var job = {
-    target: 'http://username:password@localhost:5984/test',
-    source: 'test',
+    remote: 'http://username:password@localhost:5984/test',
+    local: 'test',
     command: 'push',
     watch: true
   };
@@ -178,14 +178,14 @@ describe('[save, jobs]', function () {
 
   describe('a quilt saving a job', function () {
     it('should not run that job', function (done) {
-      nano(job.target.replace('username:password@', '')).info(function (err) {
+      nano(job.remote.replace('username:password@', '')).info(function (err) {
         assert.equal(err.status_code, 404, 'db exists but shouldn\'t');
         done();
       });
     });
 
     it('should write that job to disk', function () {
-      var test_jobs = jobs.filter(function (entry) { return entry.source === job.source; });
+      var test_jobs = jobs.filter(function (entry) { return entry.local === job.local; });
       assert(test_jobs.length === 1, 'job not saved');
     });
   });
