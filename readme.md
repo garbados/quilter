@@ -5,47 +5,55 @@ Maps a file directory to a CouchDB / Cloudant database. Which is to say, it's an
 ## Installation
 
     sudo npm install -g quilter
-    quilt init
-    # tell quilt what to watch, and where to put it
+    quilt sync --local {folder} --remote {url} --watch
 
-That's it! Quilt will watch any files in the folder you tell it to watch, and push them to the remote instance whenever they change. Or, you can do this to avoid any prompting:
+That's it! Quilt will watch files on the `remote` database and in the `local` folder, and will sync any changes that occur. To save that command for the future, use `--save`:
 
-    quilt init --mount {folder} --remote {url}
+    quilt sync --local {folder} --remote {url} --watch --save
+    quilt # runs all saved jobs
 
-For more help, run `quilt -h`. To enable logging, run `quilt init` with the `-v` or `--verbose` options.
+## Commands
 
-## Dashboard
+* `pull`: pull files from `remote` into `local`
+* `push`: push files from `local` up to `remote`
+* `sync`: push and pull files from and to `local` and `remote`
+* (default): run all saved jobs
+* `jobs`: list all saved jobs
 
-Quilt comes with a dashboard app that lives in whatever instances you sync your files with. This lets you explore, upload, download, and share files. To visit it, launch Quilt, and then go to `_design/dash/_rewrite` in your remote instance. Here's a screenshot:
+## Options
 
-![dashboard!](http://eggchair.maxthayer.org/img/Screen%20Shot%202013-10-18%20at%206.44.11%20PM.png)
-
-To load up the dashboard into a given Quilt, do this:
-
-    quilt dash
-    # tell quilt where to push the dashboard
-
-Or, you can do `quilt dash -r {dash}` to skip the prompting.
+* `--local`: a local folder, like `~/Pictures`.
+* `--remote`: a remote database, like a CouchDB or Cloudant instance.
+* `--save`: save the given command for later re-use.
+* `--watch`: continue watching and reacting to changes indefinitely.
+* `--config`: path to a non-default file to use for saving and reading configuration values.
+* `--log`: indicates level for logging. Choose from error, warn, info, verbose, debug, and silly.
 
 ## Quilting on Startup
 
-If you want to start quilting when your computer starts, do this:
+*These instructions are for \*nix systems, like Linux and Mac OS X*
 
-    quilt daemon
-    # tell quilt what to watch, and where to put it    
+Using [forever](https://github.com/nodejitsu/forever) and `cron`, you can set Quilt to run on a regular basis. Like this:
 
-Then, when you start your computer, quilt will start watching your files automatically. `quilt daemon` can use the `--mount` and `--remote` options like `quilt init` to skip prompting.
+    sudo npm install -g forever
+    echo '@reboot forever quilt' | crontab
 
-To stop quilt from autostarting, do this:
+That'll run all saved jobs whenever your computer starts. If Quilt fails, `forever` will restart it.
 
-    quilt undaemon
+## Config
 
-That will remove any commands that watch the given `--mount` and `--remote` folders.
+By default, jobs are saved to `~/.quilt.json`. It's just JSON, so you can edit it as you please. If it becomes invalid JSON, Quilt will get angry. Here's an example config file:
+
+    [
+      { 
+        command: 'pull',
+        local: 'testbutt',
+        remote: 'http://localhost:5984/eggchair'
+      } 
+    ]
 
 ## Tests
 
 The tests sync data with a live CouchDB instance running at `http://localhost:5984`. So, to run the tests, make sure you have an instance listening at that URL.
 
 To run the tests, do `npm test`.
-
-HTTP and filesystem mocks are [in development](https://github.com/garbados/quilter/issues/1).

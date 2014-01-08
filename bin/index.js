@@ -23,11 +23,12 @@ if (argv.log) {
 // save the given command
 if (argv.save) {
   // get opts to save
-  var opts = {};
-  opts.command = command;
-  ['source', 'target', 'watch'].forEach(function (key) {
-    opts[key] = argv[key];
-  });
+  var opts = {
+    command: command,
+    local: argv.local,
+    remote: argv.remote,
+    watch: argv.watch
+  };
 
   // save to custom config file
   if (argv.config) {
