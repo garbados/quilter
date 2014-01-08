@@ -38,7 +38,7 @@ Print some help about available commands.
 
 ### `jobs`
 
-Print out the current job list -- that is, what would be run 
+Print out the current job list -- that is, what would be run if `quilt` were run without a command.
 
 ## Tests
 
