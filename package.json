@@ -5,7 +5,7 @@
   "preferGlobal": "true",
   "main": "./lib/index.js",
   "bin": {
-    "quilt": "./node_modules/.bin/forever ./bin"
+    "quilt": "./bin/index.js"
   },
   "directories": {
     "test": "tests"
@@ -43,6 +43,6 @@
     "underscore": "~1.5.2",
     "mime": "~1.2.11",
     "optimist": "~0.6.0",
-    "forever": "~0.10.11"
+    "winston": "~0.7.2"
   }
 }

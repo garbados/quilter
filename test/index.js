@@ -4,6 +4,9 @@ var fs = require('fs');
 var async = require('async');
 var nano = require('nano');
 
+var winston = require('winston');
+winston.level = 'warn';
+
 // TODO not run any jobs with `watch: true` if `nowatch` is true.
 // TODO not run saved jobs if `source` and `target` are set.
 // TODO quilt will not break when connectivity to a database is lost or interrupted
@@ -44,7 +47,7 @@ describe('[push, pull, sync]', function () {
           fs.writeFile(filepath, content, function (err) {
             done(err);
           });
-        }
+        };
       }))
     ], done);
   });
