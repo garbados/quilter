@@ -14,33 +14,58 @@ describe('[push, pull, sync]', function () {
   var nano_instance = nano(instance);
   var db = 'test';
   var target = [instance, db].join('/');
-  var source1 = 'test1';
-  var source2 = 'test2';
+  var source1 = '.test1';
+  var source2 = '.test2';
   var file = '/derp.md';
   var other_file = '/herp.md';
   var content = '# hello';
 
-  beforeEach(function (done) {
+  before(function (done) {
     async.series([
-      fs.mkdir.bind(fs, source1, undefined),
-      fs.mkdir.bind(fs, source2, undefined),
-      fs.writeFile.bind(fs, source2 + file, content),
-      fs.writeFile.bind(fs, source1 + other_file, content)
+      async.parallel.bind(async, [
+        source1, source2
+      ].map(function (source) {
+        return function (done) {
+          fs.mkdir(source, function (err) {
+            err && console.log(err);
+            if (err && err.code === 'EEXIST') {
+              done();
+            } else {
+              done(err);
+            }
+          }); 
+        };
+      })),
+      async.parallel.bind(async, [
+        source2 + file,
+        source1 + other_file
+      ].map(function (filepath) {
+        return function (done) {
+          fs.writeFile(filepath, content, function (err) {
+            err && console.log(err);
+            done(err);
+          });
+        }
+      }))
     ], done);
   });
 
-  afterEach(function (done) {
-    async.parallel([
-      fs.unlink.bind(fs, source2 + file),
-      fs.unlink.bind(fs, source1 + other_file),
-      fs.rmdir.bind(fs, source1),
-      fs.rmdir.bind(fs, source2),
+  after(function (done) {
+    async.series([
+      async.parallel.bind(async, [
+        fs.unlink.bind(fs, source2 + file),
+        fs.unlink.bind(fs, source1 + other_file),
+      ]),
+      async.parallel.bind(async, [
+        fs.rmdir.bind(fs, source1),
+        fs.rmdir.bind(fs, source2)
+      ]),
       nano_instance.db.destroy.bind(nano_instance.db, db)
     ], done);
   });
 
   describe('a quilt pulling changes from the same database as another quilt is pushing to', function () {
-    beforeEach(function (done) {
+    before(function (done) {
       async.series([
         quilter.pull.bind(quilter, {
           target: target,
@@ -70,7 +95,7 @@ describe('[push, pull, sync]', function () {
   });
 
   describe('a quilt syncing changes with the same database as another quilt', function () {
-    it('will pull changes from the latter\'s filesystem', function () {
+    it('will pull changes from the latter\'s filesystem', function (done) {
       fs.readFile(source2 + file, function (err, buffer) {
         assert(!err, 'threw errors: ' + err);
         assert(buffer.toString().indexOf(content) > -1, 'incorrect file content: ' + buffer.toString());
@@ -78,7 +103,7 @@ describe('[push, pull, sync]', function () {
       });
     });
 
-    it('will push local changes to the latter\'s filesystem', function () {
+    it('will push local changes to the latter\'s filesystem', function (done) {
       fs.readFile(source1 + other_file, function (err, buffer) {
         assert(!err, 'threw errors: ' + err);
         assert(buffer.toString().indexOf(content) > -1, 'incorrect file content: ' + buffer.toString());
@@ -89,7 +114,7 @@ describe('[push, pull, sync]', function () {
 });
 
 describe('[push, pull, sync] [watch: true]', function () {
-  afterEach(function () {
+  after(function () {
     describe('will continually act on changes if `watch` is set', function () {
       // TODO
     });
@@ -117,29 +142,33 @@ describe('[save, jobs]', function () {
     command: 'push',
     watch: true
   };
+  var config = '.testconfig.json';
   var jobs;
 
-  beforeEach(function (done) {
+  before(function (done) {
     async.series([
-      quilter.save.bind(quilter, job),
-      quilter.jobs
+      quilter.save.bind(quilter, config, job),
+      quilter.jobs.bind(quilter, config)
     ], function (err, res) {
       assert(!err, 'threw errors: ' + err);
-      console.log(res);
-      jobs = res[1];
+      jobs = res[res.length - 1];
       done();
     });
   });
 
+  after(fs.unlink.bind(fs, config));
+
   describe('a quilt saving a job', function () {
     it('should not run that job', function (done) {
-      nano(job.target, function (err, res) {
-        assert.equal(res.status_code, 404, 'db exists but shouldn\'t');
+      nano(job.target.replace('username:password@', '')).info(function (err) {
+        assert.equal(err.status_code, 404, 'db exists but shouldn\'t');
+        done();
       });
     });
 
     it('should write that job to disk', function () {
-      assert(jobs.indexOf(job) > -1, 'job not saved');
+      var test_jobs = jobs.filter(function (entry) { return entry.source === job.source; });
+      assert(test_jobs.length === 1, 'job not saved');
     });
   });
 
@@ -149,7 +178,7 @@ describe('[save, jobs]', function () {
     });
 
     it('should obscure passwords', function () {
-      assert.equal(JSON.stringify(jobs).indexOf('password'), -1, 'password not obscured');
+      assert.equal(JSON.stringify(jobs).indexOf(':password@'), -1, 'password not obscured');
     });
   });
 });
