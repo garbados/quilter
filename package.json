@@ -5,13 +5,13 @@
   "preferGlobal": "true",
   "main": "./lib/index.js",
   "bin": {
-    "quilt": "./bin/quilt.js"
+    "quilt": "./bin/index.js"
   },
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "grunt && ./node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -31,22 +31,18 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "~1.13.0",
-    "mocks": "0.0.15",
     "grunt-contrib-jshint": "~0.6.4",
     "grunt": "~0.4.1",
     "matchdep": "~0.3.0"
   },
   "dependencies": {
-    "commander": "~2.0.0",
-    "prompt": "~0.2.11",
     "watch": "~0.8.0",
     "nano": "~4.1.4",
     "async": "~0.2.9",
     "dive": "~0.3.0",
     "underscore": "~1.5.2",
     "mime": "~1.2.11",
-    "crontab": "~0.3.4",
-    "forever-monitor": "~1.2.3",
-    "couchapp": "~0.10.0"
+    "optimist": "~0.6.0",
+    "winston": "~0.7.2"
   }
 }
