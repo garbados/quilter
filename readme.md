@@ -1,8 +1,4 @@
-# Quilt 
-[![Build Status](https://secure.travis-ci.org/garbados/quilter.png?branch=master)](http://travis-ci.org/garbados/quilter)
-[![Coverage Status](https://coveralls.io/repos/garbados/quilter/badge.png)](https://coveralls.io/r/garbados/quilter)
-[![Stories in Ready](https://badge.waffle.io/garbados/quilter.png?label=ready)](http://waffle.io/garbados/quilter)
-[![NPM version](https://badge.fury.io/js/quilter.png)](http://badge.fury.io/js/quilter)
+# Quilt [![Build Status](https://secure.travis-ci.org/garbados/quilter.png?branch=master)](http://travis-ci.org/garbados/quilter)[![Coverage Status](https://coveralls.io/repos/garbados/quilter/badge.png)](https://coveralls.io/r/garbados/quilter)[![Stories in Ready](https://badge.waffle.io/garbados/quilter.png?label=ready)](http://waffle.io/garbados/quilter)[![NPM version](https://badge.fury.io/js/quilter.png)](http://badge.fury.io/js/quilter)
 
 
 Maps a file directory to a CouchDB / Cloudant database. Which is to say, it's an open-source Dropbox.
@@ -41,7 +37,7 @@ N.B. These instructions are for *nix systems, like Linux and Mac OS X
 Using [forever](https://github.com/nodejitsu/forever) and `cron`, you can set Quilt to run on a regular basis. Like this:
 
     sudo npm install -g forever
-    echo '@reboot forever quilt' | crontab
+    echo '@reboot' `which node` `which forever` `which quilt` | crontab
 
 That'll run all saved jobs whenever your computer starts. If Quilt fails, `forever` will restart it.
 
