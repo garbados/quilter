@@ -1,5 +1,5 @@
 var assert = require('assert');
-var quilter = require('../lib');
+var quilter = require('../lib-cov');
 var fs = require('fs');
 var async = require('async');
 var nano = require('nano');

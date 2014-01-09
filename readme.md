@@ -31,7 +31,7 @@ That's it! Quilt will watch files on the `remote` database and in the `local` fo
 
 ## Quilting on Startup
 
-*These instructions are for \*nix systems, like Linux and Mac OS X*
+N.B. These instructions are for *nix systems, like Linux and Mac OS X
 
 Using [forever](https://github.com/nodejitsu/forever) and `cron`, you can set Quilt to run on a regular basis. Like this:
 

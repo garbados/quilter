@@ -11,7 +11,10 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "grunt && ./node_modules/.bin/mocha"
+    "test": "grunt",
+    "cov": "./node_modules/.bin/mocha --reporter html-cov > coverage.html",
+    "lcov": "./node_modules/.bin/mocha -R mocha-lcov-reporter",
+    "coveralls": "./node_modules/.bin/mocha -R mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
     "type": "git",
@@ -32,8 +35,10 @@
   "devDependencies": {
     "mocha": "~1.13.0",
     "grunt-contrib-jshint": "~0.6.4",
-    "grunt": "~0.4.1",
-    "matchdep": "~0.3.0"
+    "grunt": "~0.4.2",
+    "matchdep": "~0.3.0",
+    "grunt-simple-mocha": "~0.4.0",
+    "grunt-jscoverage": "0.0.3"
   },
   "dependencies": {
     "watch": "~0.8.0",
@@ -43,6 +48,8 @@
     "underscore": "~1.5.2",
     "mime": "~1.2.11",
     "optimist": "~0.6.0",
-    "winston": "~0.7.2"
+    "winston": "~0.7.2",
+    "mocha-lcov-reporter": "0.0.1",
+    "coveralls": "~2.6.1"
   }
 }

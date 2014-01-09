@@ -13,6 +13,17 @@ module.exports = function(grunt) {
         'index.js'
       ],
       options: {}
+    },
+    jscoverage: {
+      options: {
+        inputDirectory: 'lib',
+        outputDirectory: 'lib-cov'
+      }
+    },
+    simplemocha: {
+      options: {},
+
+      all: { src: ['test/**/*.js'] }
     }
   });
 
@@ -21,7 +32,9 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('default', [
-    'jshint'
+    'jshint',
+    'jscoverage',
+    'simplemocha'
   ]);
 
 };
