@@ -1,4 +1,8 @@
-# Quilt [![Build Status](https://secure.travis-ci.org/garbados/quilter.png?branch=master)](http://travis-ci.org/garbados/quilter)[![Coverage Status](https://coveralls.io/repos/garbados/quilter/badge.png)](https://coveralls.io/r/garbados/quilter)[![Stories in Ready](https://badge.waffle.io/garbados/quilter.png?label=ready)](http://waffle.io/garbados/quilter)[![NPM version](https://badge.fury.io/js/quilter.png)](http://badge.fury.io/js/quilter)
+# Quilt
+[![Build Status](https://secure.travis-ci.org/garbados/quilter.png?branch=master)](http://travis-ci.org/garbados/quilter)
+[![Coverage Status](https://coveralls.io/repos/garbados/quilter/badge.png)](https://coveralls.io/r/garbados/quilter)
+[![Stories in Ready](https://badge.waffle.io/garbados/quilter.png?label=ready)](http://waffle.io/garbados/quilter)
+[![NPM version](https://badge.fury.io/js/quilter.png)](http://badge.fury.io/js/quilter)
 
 
 Maps a file directory to a CouchDB / Cloudant database. Which is to say, it's an open-source Dropbox.
