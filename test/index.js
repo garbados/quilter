@@ -181,7 +181,8 @@ describe('[save, jobs, all]', function () {
       quilter.save.bind(quilter, job_basic),
       quilter.all.bind(quilter, job_basic),
       quilter.save.bind(quilter, job),
-      quilter.jobs.bind(quilter, job),
+      quilter.jobs,
+      quilter.jobs.bind(quilter, job)
     ], function (err, res) {
       assert(!err, 'threw errors: ' + err);
       jobs = res[res.length - 1];
