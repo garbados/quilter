@@ -3,6 +3,8 @@ services:
   - couchdb
 before_install:
   - npm install -g grunt-cli jscoverage
+after_success:
+  - npm run-script coveralls
 node_js:
   - '0.10'
   - '0.8'
