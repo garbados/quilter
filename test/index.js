@@ -132,12 +132,6 @@ describe('[push, pull, sync]', function () {
 });
 
 describe('[push, pull, sync] [watch: true]', function () {
-  after(function () {
-    describe('will continually act on changes if `watch` is set', function () {
-      // TODO
-    });
-  });
-
   describe('a quilt syncing changes with the same database as another quilt', function () {
     beforeEach(function () {
       // TODO
@@ -150,23 +144,44 @@ describe('[push, pull, sync] [watch: true]', function () {
     it('will push local changes to the latter\'s filesystem', function () {
       // TODO
     });
+
+    it('will continually act on changes if `watch` is set', function () {
+      // TODO
+    });
   });
 });
 
-describe('[save, jobs]', function () {
+describe('[save, jobs, all]', function () {
   var job = {
-    remote: 'http://username:password@localhost:5984/test',
-    local: 'test',
+    remote: 'http://username:password@localhost:5984/savetest',
+    local: '.test3',
     command: 'push',
-    watch: true
+    watch: true,
+    config: '.testconfig.json'
   };
-  var config = '.testconfig.json';
+  var job_basic = {
+    remote: 'http://localhost:5984/derptest',
+    local: '.test3',
+    command: 'push',
+    config: '.testconfig.json'
+  };
   var jobs;
 
   before(function (done) {
     async.series([
-      quilter.save.bind(quilter, config, job),
-      quilter.jobs.bind(quilter, config)
+      function (done) {
+        fs.mkdir(job_basic.local, function (err) {
+          if (err && err.code === 'EEXIST') {
+            done();
+          } else {
+            done(err);
+          }
+        }); 
+      },
+      quilter.save.bind(quilter, job_basic),
+      quilter.all.bind(quilter, job_basic),
+      quilter.save.bind(quilter, job),
+      quilter.jobs.bind(quilter, job),
     ], function (err, res) {
       assert(!err, 'threw errors: ' + err);
       jobs = res[res.length - 1];
@@ -174,19 +189,27 @@ describe('[save, jobs]', function () {
     });
   });
 
-  after(fs.unlink.bind(fs, config));
+  after(async.auto.bind(async, {
+    nano: function (done) {
+      var instance = job_basic.remote.slice(0, job_basic.remote.lastIndexOf('/'));
+      var db = job_basic.remote.slice(job_basic.remote.lastIndexOf('/') + 1);
+      nano(instance).db.destroy(db, done); 
+    },
+    rmdir: fs.rmdir.bind(fs, job.local),
+    unlink: ['rmdir', fs.unlink.bind(fs, job.config)]
+  }));
 
   describe('a quilt saving a job', function () {
     it('should not run that job', function (done) {
       nano(job.remote.replace('username:password@', '')).info(function (err) {
-        assert.equal(err.status_code, 404, 'db exists but shouldn\'t');
+        assert.equal(err && err.status_code, 404, 'db exists but shouldn\'t');
         done();
       });
     });
 
     it('should write that job to disk', function () {
       var test_jobs = jobs.filter(function (entry) { return entry.local === job.local; });
-      assert(test_jobs.length === 1, 'job not saved');
+      assert(test_jobs.length > 0, 'job not saved');
     });
   });
 
@@ -198,5 +221,9 @@ describe('[save, jobs]', function () {
     it('should obscure passwords', function () {
       assert.equal(JSON.stringify(jobs).indexOf(':password@'), -1, 'password not obscured');
     });
+  });
+
+  describe('a quilt running saved jobs', function () {
+    it('should finish happily', nano(job_basic.remote).info);
   });
 });
