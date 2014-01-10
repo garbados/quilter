@@ -52,13 +52,25 @@ describe('[push, pull, sync]', function () {
     ], done);
   });
 
+  function ok_if_missing (func) {
+    return function (done) {
+      func(function (err) {
+        if (err && err.code === 'ENOENT') {
+          done();
+        } else {
+          done(err);
+        }
+      });
+    };
+  }
+
   after(function (done) {
     async.series([
       async.parallel.bind(async, [
-        fs.unlink.bind(fs, local2 + file),
-        fs.unlink.bind(fs, local1 + file),
-        fs.unlink.bind(fs, local2 + other_file),
-        fs.unlink.bind(fs, local1 + other_file),
+        ok_if_missing(fs.unlink.bind(fs, local2 + file)),
+        ok_if_missing(fs.unlink.bind(fs, local1 + file)),
+        ok_if_missing(fs.unlink.bind(fs, local2 + other_file)),
+        ok_if_missing(fs.unlink.bind(fs, local1 + other_file)),
       ]),
       async.parallel.bind(async, [
         fs.rmdir.bind(fs, local1),
