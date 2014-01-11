@@ -73,8 +73,8 @@ describe('[push, pull, sync]', function () {
         ok_if_missing(fs.unlink.bind(fs, local1 + other_file)),
       ]),
       async.parallel.bind(async, [
-        fs.rmdir.bind(fs, local1),
-        fs.rmdir.bind(fs, local2)
+        ok_if_missing(fs.rmdir.bind(fs, local1)),
+        ok_if_missing(fs.rmdir.bind(fs, local2))
       ]),
       nano_instance.db.destroy.bind(nano_instance.db, db)
     ], done);
