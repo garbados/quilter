@@ -41,7 +41,7 @@ N.B. These instructions are for *nix systems, like Linux and Mac OS X
 Using [forever](https://github.com/nodejitsu/forever) and `cron`, you can set Quilt to run on a regular basis. Like this:
 
     sudo npm install -g forever
-    echo '@reboot' `which node` `which forever` `which quilt` | crontab
+    echo '@reboot' `which node` `which forever` '--minUptime 1' `which quilt` '--log info' | crontab
 
 That'll run all saved jobs whenever your computer starts. If Quilt fails, `forever` will restart it.
 
