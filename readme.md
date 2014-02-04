@@ -1,4 +1,4 @@
-# Quilt
+# Quilter
 [![Build Status](https://secure.travis-ci.org/garbados/quilter.png?branch=master)](http://travis-ci.org/garbados/quilter)
 [![Coverage Status](https://coveralls.io/repos/garbados/quilter/badge.png)](https://coveralls.io/r/garbados/quilter)
 [![Stories in Ready](https://badge.waffle.io/garbados/quilter.png?label=ready)](http://waffle.io/garbados/quilter)
@@ -12,7 +12,7 @@ Maps a file directory to a CouchDB / Cloudant database. Which is to say, it's an
     sudo npm install -g quilter
     quilt sync --local {folder} --remote {url} --watch
 
-That's it! Quilt will watch files on the `remote` database and in the `local` folder, and will sync any changes that occur. To save that command for the future, use `--save`:
+That's it! Quilter will watch files on the `remote` database and in the `local` folder, and will sync any changes that occur. To save that command for the future, use `--save`:
 
     quilt sync --local {folder} --remote {url} --watch --save
     quilt # runs all saved jobs
@@ -38,16 +38,16 @@ That's it! Quilt will watch files on the `remote` database and in the `local` fo
 
 N.B. These instructions are for *nix systems, like Linux and Mac OS X
 
-Using [forever](https://github.com/nodejitsu/forever) and `cron`, you can set Quilt to run on a regular basis. Like this:
+Using [forever](https://github.com/nodejitsu/forever) and `cron`, you can set Quilter to run on a regular basis. Like this:
 
     sudo npm install -g forever
     echo '@reboot' `which node` `which forever` '--minUptime 1' `which quilt` '--log info' | crontab
 
-That'll run all saved jobs whenever your computer starts. If Quilt fails, `forever` will restart it.
+That'll run all saved jobs whenever your computer starts. If Quilter fails, `forever` will restart it.
 
 ## Config
 
-By default, jobs are saved to `~/.quilt.json`. It's just JSON, so you can edit it as you please. If it becomes invalid JSON, Quilt will get angry. Here's an example config file:
+By default, jobs are saved to `~/.quilt.json`. It's just JSON, so you can edit it as you please. If it becomes invalid JSON, Quilter will get angry. Here's an example config file:
 
     [
       { 
