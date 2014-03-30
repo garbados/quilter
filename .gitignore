@@ -2,3 +2,4 @@ node_modules
 coverage.html
 npm-debug.log
 lib-cov
+src-cov

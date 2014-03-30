@@ -7,6 +7,7 @@ module.exports = function(grunt) {
       files: [
         'bin/*',
         'lib/*',
+        'src/*',
         'tasks/*',
         'test/*',
         'Gruntfile.js',
@@ -16,8 +17,8 @@ module.exports = function(grunt) {
     },
     jscoverage: {
       options: {
-        inputDirectory: 'lib',
-        outputDirectory: 'lib-cov'
+        inputDirectory: 'src',
+        outputDirectory: 'src-cov'
       }
     },
     simplemocha: {
