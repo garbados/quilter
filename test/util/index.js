@@ -23,16 +23,9 @@ describe('util', function () {
   it('should create nested directories', function (done) {
     // none of these directories should exist
     // so let's make all of them
-    quilter.util.mkdir('./derp/omg', function (err) {
-      if (err) {
-        throw err;
-      } else {
-        // destroy the directory tree
-        async.series([
-          fs.rmdir.bind(fs, './derp/omg'),
-          fs.rmdir.bind(fs, './derp')
-        ], done);
-      }
-    });
+    async.series([
+      quilter.util.mkdir.bind(null, './derp/omg'),
+      quilter.util.rmdir.bind(null, './derp')
+    ], done);
   });
 });

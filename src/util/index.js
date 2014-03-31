@@ -52,7 +52,7 @@ function mkdir (fp, mode, done) {
   });
 }
 
-// TODO get rmdir working and tested
+// recursively delete a directory tree
 function rmdir (fp, done) {
   async.series([
     function (done) {
@@ -66,7 +66,7 @@ function rmdir (fp, done) {
               fs.stat.bind(fs, filename),
               function (stat, done) {
                 if (stat.isDirectory()) {
-                  rmdir(filename);
+                  rmdir(filename, done);
                 } else {
                   fs.unlink(filename, done);
                 }
