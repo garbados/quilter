@@ -24,7 +24,8 @@ describe('util', function () {
     // none of these directories should exist
     // so let's make all of them
     async.series([
-      quilter.util.mkdir.bind(null, './derp/omg'),
+      quilter.util.mkdir.bind(null, './derp/omg/wtf/bbq'),
+      fs.writeFile.bind(fs, './derp/omg/wtf/bbq/lol.md', 'roflmao'),
       quilter.util.rmdir.bind(null, './derp')
     ], done);
   });
