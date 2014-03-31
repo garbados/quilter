@@ -12,9 +12,14 @@
   },
   "scripts": {
     "test": "grunt",
-    "cov": "./node_modules/.bin/mocha --reporter html-cov > coverage.html",
-    "lcov": "./node_modules/.bin/mocha -R mocha-lcov-reporter",
-    "coveralls": "./node_modules/.bin/mocha -R mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js"
+    "jshint": "./node_modules/.bin/jshint src",
+    "jscoverage": "./node_modules/.bin/jscoverage src src-cov",
+    "mocha": "./node_modules/.bin/mocha test/**/*.js",
+    "html-cov": "./node_modules/.bin/mocha test/**/*.js -R html-cov > coverage.html",
+    "lcov": "./node_modules/.bin/mocha test/**/*.js -R mocha-lcov-reporter",
+    "coveralls": "./node_modules/.bin/mocha test/**/*.js -R mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js",
+    "build": "npm run jshint && npm run jscoverage",
+    "test": "npm run build && npm run mocha"
   },
   "repository": {
     "type": "git",
@@ -34,11 +39,8 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "~1.13.0",
-    "grunt-contrib-jshint": "~0.6.4",
-    "grunt": "~0.4.2",
-    "matchdep": "~0.3.0",
-    "grunt-simple-mocha": "~0.4.0",
-    "grunt-jscoverage": "0.0.3"
+    "jshint": "~2.4.4",
+    "jscoverage": "~0.3.8"
   },
   "dependencies": {
     "watch": "~0.8.0",
