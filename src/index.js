@@ -3,6 +3,7 @@ var pull = require('./push');
 var util = require('./util');
 
 function Quilter (config) {
+  config = config || {};
   this.mount = config.mount || '~';
   this.remote = config.remote || 'http://localhost:5984/quilt';
   this.config_path = config.config_path || '~/.quilt.json';

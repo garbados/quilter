@@ -30,7 +30,7 @@ function mkdir (fp, mode, done) {
   fs.mkdir(fp, mode, function (error) {
     var tasks = [];
     // When it fail in this way, do the custom steps
-    if (error && 34 === error.errno) {
+    if (error && error.errno === 34) {
       // Create the directory after...
       tasks.unshift(function (done) {
         mkdir(fp, mode, done);
@@ -52,9 +52,38 @@ function mkdir (fp, mode, done) {
   });
 }
 
+// TODO get rmdir working and tested
+function rmdir (fp, done) {
+  async.series([
+    function (done) {
+      fs.readdir(fp, function (err, files) {
+        if (err) {
+          done(err);
+        } else {
+          async.map(files, function (file, done) {
+            var filename = path.join(fp, file);
+            async.waterfall([
+              fs.stat.bind(fs, filename),
+              function (stat, done) {
+                if (stat.isDirectory()) {
+                  rmdir(filename);
+                } else {
+                  fs.unlink(filename, done);
+                }
+              }
+            ], done);
+          }, done);
+        }
+      });
+    },
+    fs.rmdir.bind(fs, fp)
+  ], done);
+}
+
 module.exports = {
   hash: hash,
   mkdir: mkdir,
+  rmdir: rmdir,
   file: require('./file'),
   config: require('./config')
 };
