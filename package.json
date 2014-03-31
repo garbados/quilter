@@ -11,15 +11,15 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "grunt",
+    "test": "npm run build && npm run mocha",
     "jshint": "./node_modules/.bin/jshint src",
     "jscoverage": "./node_modules/.bin/jscoverage src src-cov",
-    "mocha": "./node_modules/.bin/mocha test/**/*.js",
-    "html-cov": "./node_modules/.bin/mocha test/**/*.js -R html-cov > coverage.html",
-    "lcov": "./node_modules/.bin/mocha test/**/*.js -R mocha-lcov-reporter",
-    "coveralls": "./node_modules/.bin/mocha test/**/*.js -R mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js",
+    "mocha": "./node_modules/.bin/mocha test/*",
+    "html-cov": "./node_modules/.bin/mocha test/* -R html-cov > coverage.html",
+    "lcov": "./node_modules/.bin/mocha test/* -R mocha-lcov-reporter",
+    "coveralls": "./node_modules/.bin/mocha test/* -R mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js",
     "build": "npm run jshint && npm run jscoverage",
-    "test": "npm run build && npm run mocha"
+    "todo": "grep -r TODO src test"
   },
   "repository": {
     "type": "git",
@@ -40,7 +40,8 @@
   "devDependencies": {
     "mocha": "~1.13.0",
     "jshint": "~2.4.4",
-    "jscoverage": "~0.3.8"
+    "jscoverage": "~0.3.8",
+    "request": "~2.34.0"
   },
   "dependencies": {
     "watch": "~0.8.0",
