@@ -11,7 +11,7 @@ function file_path (mount, fp) {
   }
 
   // fix filepath for current OS
-  fp = fp.relace(sep, path.sep);
+  fp = fp.replace(sep, path.sep);
   // add mount if it exists and isn't already in the path
   if (mount && fp.indexOf(mount) === -1) fp = path.join(mount, fp);
   // add home

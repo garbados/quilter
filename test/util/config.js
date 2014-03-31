@@ -1,5 +1,5 @@
 var assert = require('assert');
-var quilter = require('../../src');
+var quilter = require('../../src-cov');
 var async = require('async');
 var fs = require('fs');
 
@@ -26,7 +26,7 @@ describe('config utils', function () {
     var self = this;
 
     async.series([
-      quiler.util.config.set.bind(this, [{ hello: 'world' }]),
+      quilter.util.config.set.bind(this, [{ hello: 'world' }]),
       function (done) {
         quilter.util.config.get.call(self, function (err, config) {
           if (err) {
@@ -37,7 +37,7 @@ describe('config utils', function () {
           }
         });
       },
-      quiler.util.config.set.bind(this, [{ good: 'bye' }]),
+      quilter.util.config.set.bind(this, [{ good: 'bye' }]),
       function (done) {
         quilter.util.config.get.call(self, function (err, config) {
           if (err) {

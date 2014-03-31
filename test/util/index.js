@@ -15,6 +15,7 @@ describe('util', function () {
       quilter.util.hash('./test_file', function (err, hash) {
         if (err) throw err;
         assert.notEqual(hash, 'hello friend');
+        fs.unlink('./test_file', done);
       });
     });
   });
@@ -22,19 +23,15 @@ describe('util', function () {
   it('should create nested directories', function (done) {
     // none of these directories should exist
     // so let's make all of them
-    quilter.util.mkdir('./derp/herp/omg', function (err) {
+    quilter.util.mkdir('./derp/omg', function (err) {
       if (err) {
         throw err;
       } else {
-        // destroy the root directory
-        fs.rmdir('./derp', function (err) {
-          console.log(err);
-          if (err) {
-            throw err;
-          } else {
-            done();
-          }
-        });
+        // destroy the directory tree
+        async.series([
+          fs.rmdir.bind(fs, './derp/omg'),
+          fs.rmdir.bind(fs, './derp')
+        ], done);
       }
     });
   });

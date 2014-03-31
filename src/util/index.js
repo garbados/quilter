@@ -18,6 +18,7 @@ function hash (fp, done) {
   });
 }
 
+// create a directory path recursively
 function mkdir (fp, mode, done) {
   // defaults
   if (!done) {
@@ -29,21 +30,24 @@ function mkdir (fp, mode, done) {
   fs.mkdir(fp, mode, function (error) {
     var tasks = [];
     // When it fail in this way, do the custom steps
-    if (error && [34, 47].indexOf(error.errno) !== -1) {
+    if (error && 34 === error.errno) {
       // Create the directory after...
-      tasks.shift(function (done) {
-        mkdir(dirPath, mode, done);
+      tasks.unshift(function (done) {
+        mkdir(fp, mode, done);
       });
       // Creating all the parents recursively
-      tasks.shift(function (done) {
-        mkdir(path.dirname(dirPath), mode, done);
+      tasks.unshift(function (done) {
+        mkdir(path.dirname(fp), mode, done);
       });
+    } else if (error && error.errno === 47) {
+      // directory already exists; do nothing
     } else {
       // pass along any unexpected errors
-      tasks.push(function (done) {
+      tasks.unshift(function (done) {
         done(error);
       });
     }
+
     async.series(tasks, done);
   });
 }
