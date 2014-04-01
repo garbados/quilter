@@ -86,7 +86,7 @@ describe('pull', function () {
       
     });
 
-    // TODO delete a local file based on a remote doc
+    // delete a local file based on a remote doc
     it('should delete a doc', function (done) {
       var self = this;
       quilter.pull.destroy.call(this, 'test.md', function (err) {
@@ -117,7 +117,7 @@ describe('pull', function () {
   });
 
   describe('watch', function () {
-    // TODO pull changes from the remote to the local dir indefinitely
+    // pull changes from the remote to the local dir indefinitely
     it('should sync the state of the remote and local', function (done) {
       var self = this;
       // begin watching
