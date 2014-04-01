@@ -1,9 +1,10 @@
 var assert = require('assert');
-var quilter = require('../../src-cov');
+var quilter = require('../../src');
 var fs = require('fs');
 var async = require('async');
 var request = require('request');
 var path = require('path');
+var async = require('async');
 
 describe('pull', function () {
   beforeEach(function (done) {
@@ -42,6 +43,7 @@ describe('pull', function () {
     it('should insert a doc', function (done) {
       var self = this;
       quilter.pull.update.call(this, 'test.md', function (err) {
+        assert(!err);
         fs.exists(path.join(self.mount, 'test.md'), function (exists) {
           assert(exists);
           done();
@@ -55,11 +57,10 @@ describe('pull', function () {
       async.series([
         // update the doc on the remote
         async.waterfall.bind(async, [
-          request.bind({
-            method: 'GET',
-            url: [this.remote, 'test.md'].join('/')
-          }),
-          function (doc, done) {
+          request.get.bind(request, [this.remote, 'test.md'].join('/')),
+          function (res, doc, done) {
+            doc = JSON.parse(doc);
+            doc._attachments = {};
             doc._attachments.file = {
               content_type: 'text/plain',
               data: new Buffer('# good bye').toString('base64')
@@ -69,7 +70,7 @@ describe('pull', function () {
           function (doc, done) {
             request({
               method: 'PUT',
-              url: [self.remote, 'test.md'].join('/'),
+              uri: [self.remote, 'test.md'].join('/'),
               json: doc
             }, done);
           }
@@ -89,8 +90,12 @@ describe('pull', function () {
     // delete a local file based on a remote doc
     it('should delete a doc', function (done) {
       var self = this;
-      quilter.pull.destroy.call(this, 'test.md', function (err) {
+      async.series([
+        fs.writeFile.bind(fs, path.join(this.mount, 'test.md'), '# hello world'),
+        quilter.pull.destroy.bind(this, 'test.md')
+      ], function (err) {
         assert(!err);
+
         fs.exists(path.join(self.mount, 'test.md'), function (exists) {
           assert(!exists);
           done();
@@ -102,8 +107,12 @@ describe('pull', function () {
   describe('list', function () {
     it('should sync the state of the remote and local', function (done) {
       var self = this;
-      quilter.pull.list.call(this, function (err) {
+      async.series([
+        fs.writeFile.bind(fs, path.join(this.mount, 'test.md'), '# hello world'),
+        quilter.pull.list.bind(this)
+      ], function (err) {
         assert(!err);
+
         fs.exists(path.join(self.mount, 'test.md'), function (exists) {
           assert(exists);
           done();
@@ -116,18 +125,31 @@ describe('pull', function () {
     // pull changes from the remote to the local dir indefinitely
     it('should sync the state of the remote and local', function (done) {
       var self = this;
-      // begin watching
-      quilter.pull.watch.call(this, function (watcher) {
-        // when the watcher reports an update
-        watcher.on('update', function (id) {
-          // demonstrating the interface...
-          assert.equal(id, 'test.md');
-          // ensure the reported file exists
-          fs.exists(path.join(self.mount, 'test.md'), function (exists) {
-            assert(exists);
-            watcher.close();
-            done();
+      var saw_update = false;
+      async.waterfall([
+        function (done) {
+          quilter.pull.watch.call(self, function (watcher) {
+            done(null, watcher);
           });
+        },
+        function (watcher, done) {
+          watcher.on('update', function (id) {
+            saw_update = id;
+          });
+
+          setTimeout(function () {
+            done(null, watcher);
+          }, 50);
+        }
+      ], function (err, watcher) {
+        assert(!err);
+        assert.equal(saw_update, 'test.md');
+
+        // ensure the reported file exists
+        fs.exists(path.join(self.mount, 'test.md'), function (exists) {
+          assert(exists);
+
+          watcher.close(done);
         });
       });
     });
@@ -140,6 +162,8 @@ describe('pull', function () {
         method: 'DELETE'
       }),
       quilter.util.rmdir.bind(null, this.mount)
-    ], done);
+    ], function (err) {
+      done(err);
+    });
   });
 });

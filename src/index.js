@@ -1,6 +1,7 @@
 var push = require('./push');
-var pull = require('./push');
+var pull = require('./pull');
 var util = require('./util');
+var docs = require('./docs');
 
 function Quilter (config) {
   config = config || {};
@@ -19,5 +20,6 @@ module.exports = {
   push: push,
   pull: pull,
   util: util,
+  docs: docs,
   init: Quilter
 };

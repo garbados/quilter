@@ -5,7 +5,7 @@ var async = require('async');
 var request = require('request');
 var path = require('path');
 
-describe('pull', function () {
+describe('push', function () {
   beforeEach(function (done) {
     this.mount = './derp';
     this.remote = 'http://localhost:5984/quilt_test';
@@ -97,8 +97,7 @@ describe('pull', function () {
           // TODO ensure the reported file exists
           request.get([self.mount, 'test.md'].join('/'), function (err) {
             assert(!err);
-            watcher.close();
-            done();
+            watcher.close(done);
           });
         });
       });
