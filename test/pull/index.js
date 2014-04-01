@@ -110,10 +110,6 @@ describe('pull', function () {
         });
       });
     });
-
-    after(function (done) {
-      fs.unlink(path.join(this.mount, 'test.md'), done);
-    });
   });
 
   describe('watch', function () {
@@ -134,10 +130,6 @@ describe('pull', function () {
           });
         });
       });
-    });
-
-    after(function (done) {
-      fs.unlink(path.join(this.mount, 'test.md'), done);
     });
   });
 
