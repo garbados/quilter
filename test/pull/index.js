@@ -12,6 +12,8 @@ describe('pull', function () {
     this.config_path = './derp_config.json';
 
     async.series([
+      // create the local folder
+      fs.mkdir.bind(fs, this.mount),
       // create the remote db
       request.bind(request, {
         method: 'PUT',
@@ -145,8 +147,7 @@ describe('pull', function () {
         url: this.remote,
         method: 'DELETE'
       }),
-      quilter.util.rmdir.bind(null, this.mount),
-      fs.unlink.bind(fs, this.config_path)
+      quilter.util.rmdir.bind(null, this.mount)
     ], done);
   });
 });
