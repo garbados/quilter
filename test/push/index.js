@@ -10,19 +10,13 @@ describe('push', function () {
     this.mount = './derp';
     this.remote = 'http://localhost:5984/quilt_test';
     this.config_path = './derp_config.json';
-
-    this.quilt = new quilter.init({
-      mount: this.mount,
-      remote: this.remote,
-      config_path: this.config_path
-    });
   });
 
   describe('update', function () {
     // TODO update a local file based on a remote doc
   });
 
-  describe('delete', function () {
+  describe('destroy', function () {
     // TODO delete a local file based on a remote doc
   });
 
