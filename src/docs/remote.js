@@ -31,9 +31,10 @@ function update (id, done) {
     fs.readFile.bind(fs, fp),
     db.get.bind(db, id)
   ], function (err, res) {
+    var buffer;
     if (err) {
       if (err.status_code === 404) {
-        var buffer = res[0];
+        buffer = res[0];
         local.get.call(self, id, function (err, doc) {
           if (err) return done(err);
           
@@ -42,8 +43,8 @@ function update (id, done) {
         });
       } else return done(err);
     } else {
-      var buffer = res[0];
-      var doc = res[1];
+      buffer = res[0];
+      var doc = res[1][0];
 
       doc = format_doc.call(self, buffer, doc);
       db.insert(doc, done);
