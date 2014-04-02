@@ -65,6 +65,7 @@ function watch (done) {
 
     // direct events to the appropriate handler
     function event_handler (task, done) {
+      console.log(arguments);
       var id = util.file.id.call(self, task.fp);
       if (task.event === 'update') {
         // handle creation and updates

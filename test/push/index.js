@@ -4,11 +4,10 @@ var fs = require('fs');
 var async = require('async');
 var request = require('request');
 var path = require('path');
-// require('longjohn');
 
 describe('push', function () {
   beforeEach(function (done) {
-    this.mount = './derp';
+    this.mount = 'derp';
     this.remote = 'http://localhost:5984/quilt_test';
     this.config_path = './derp_config.json';
 
@@ -21,7 +20,8 @@ describe('push', function () {
         url: this.remote
       }),
       // put a doc locally
-      fs.writeFile.bind(fs, path.join(this.mount, 'test.md'), '# hello world')
+
+      fs.writeFile.bind(fs, quilter.util.file.path.call(this, 'test.md'), '# hello world')
     ], done);
   });
 
@@ -44,7 +44,7 @@ describe('push', function () {
       var self = this;
       async.series([
         // update the doc locally
-        fs.writeFile.bind(fs, path.join(this.mount, 'test.md'), '# good bye'),
+        fs.writeFile.bind(fs, quilter.util.file.path.call(this, 'test.md'), '# good bye'),
         // push that change to the remote
         quilter.push.update.bind(this, 'test.md')
       ], function (err) {
@@ -116,8 +116,14 @@ describe('push', function () {
             done(null, watcher);
           }
         ]),
-        fs.unlink.bind(fs, path.join(this.mount, 'test.md')),
-        fs.writeFile.bind(fs, path.join(this.mount, 'test.md'), '# good bye')
+        function (done) {
+          setTimeout(function () {
+            // wait for monitor to setup
+            done();
+          }, 500);
+        },
+        fs.unlink.bind(fs, quilter.util.file.path.call(this, 'test.md')),
+        fs.writeFile.bind(fs, quilter.util.file.path.call(this, 'test.md'), '# good bye')
       ], function (err, res) {
         assert(!err);
         var watcher = res[0];

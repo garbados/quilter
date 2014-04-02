@@ -8,7 +8,7 @@ var async = require('async');
 
 describe('pull', function () {
   beforeEach(function (done) {
-    this.mount = './derp';
+    this.mount = 'derp';
     this.remote = 'http://localhost:5984/quilt_test';
     this.config_path = './derp_config.json';
 
