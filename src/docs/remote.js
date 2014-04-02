@@ -2,6 +2,7 @@ var util = require('../util');
 var nano = require('nano');
 var fs = require('fs');
 var async = require('async');
+var local = require('./local');
 
 // retrieve the remote doc
 function get (id, done) {
@@ -16,22 +17,37 @@ function update (id, done) {
   var db = nano(this.remote);
   var self = this;
 
+  function format_doc (buffer, doc) {
+    doc._attachments = {};
+    doc._attachments.file = {
+      content_type: util.file.type.call(this, id),
+      data: buffer.toString('base64')
+    };
+
+    return doc;
+  }
+
   async.parallel([
     fs.readFile.bind(fs, fp),
     db.get.bind(db, id)
   ], function (err, res) {
-    if (err) return done(err);
+    if (err) {
+      if (err.status_code === 404) {
+        var buffer = res[0];
+        local.get.call(self, id, function (err, doc) {
+          if (err) return done(err);
+          
+          doc = format_doc.call(self, buffer, doc);
+          db.insert(doc, done);
+        });
+      } else return done(err);
+    } else {
+      var buffer = res[0];
+      var doc = res[1];
 
-    var buffer = res[0];
-    var doc = res[1];
-
-    doc._attachments = {};
-    doc._attachments.file = {
-      content_type: util.file.type.call(self, id),
-      data: buffer.toString('base64')
-    };
-
-    db.insert(doc, done);
+      doc = format_doc.call(self, buffer, doc);
+      db.insert(doc, done);
+    }
   });
 }
 
@@ -40,7 +56,7 @@ function destroy (id, done) {
   var db = nano(this.remote);
   async.waterfall([
     db.get.bind(db, id),
-    function (doc, done) {
+    function (doc, headers, done) {
       done(null, doc._id, doc._rev);
     },
     db.destroy
