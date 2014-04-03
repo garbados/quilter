@@ -1,5 +1,5 @@
 var assert = require('assert');
-var quilter = require('../../src');
+var quilter = require('../../src-cov');
 var fs = require('fs');
 var async = require('async');
 var request = require('request');
