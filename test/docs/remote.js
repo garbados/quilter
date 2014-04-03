@@ -1,4 +1,4 @@
-var quilter = require('../../src');
+var quilter = require('../../src-cov');
 var request = require('request');
 var fs = require('fs');
 var async = require('async');

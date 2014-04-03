@@ -31,7 +31,7 @@ function update (id, done) {
         done();
       } else {
         // EGGXECUTE PLAN EGG
-        docs.local.update.call(self, doc, done);
+        docs.local.update.call(self, id, done);
       }
     }
   });

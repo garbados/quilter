@@ -16,8 +16,7 @@ function get (id, done) {
 
     var stat = res[0];
     var timestamp = stat ? new Date(stat.mtime).getTime() : 0;
-    var buffer = res[1];
-    var hash = res[2];
+    var hash = res[1];
 
     done(null, {
       _id: id,

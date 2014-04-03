@@ -66,6 +66,7 @@ function watch (done) {
     // direct events to the appropriate handler
     function event_handler (task, done) {
       var id = util.file.id.call(self, task.fp);
+      // TODO handle unexpected events gracefully
       if (task.event === 'update') {
         // handle creation and updates
         me.emit('update', id);
@@ -74,12 +75,6 @@ function watch (done) {
         // handle file removal
         me.emit('destroy', id);
         destroy.call(self, id, done);
-      } else {
-        // throw unknown event
-        done({
-          error: "unknown event",
-          args: arguments
-        });
       }
     }
 

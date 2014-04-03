@@ -1,5 +1,5 @@
 var assert = require('assert');
-var quilter = require('../../src-cov');
+var quilter = require('../../src');
 var fs = require('fs');
 var async = require('async');
 var request = require('request');
@@ -84,7 +84,6 @@ describe('pull', function () {
           done();
         });
       });
-      
     });
 
     // delete a local file based on a remote doc
