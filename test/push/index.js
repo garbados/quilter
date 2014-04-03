@@ -95,46 +95,35 @@ describe('push', function () {
   });
 
   describe('watch', function () {
+    this.timeout(7000);
     // pull changes from the remote to the local dir indefinitely
     // TODO fails currently; doesn't see filesystem changes
     it('should sync the state of the remote and local', function (done) {
       var self = this;
       var saw_update = false;
+      var filename = 'other.md';
    
       async.series([
-        async.waterfall.bind(async, [
-          function (done) {
-            quilter.push.watch.call(self, function (watcher) {
-              done(null, watcher);
-            });
-          },
-          function (watcher, done) {
+        function (done) {
+          quilter.push.watch.call(self, function (watcher) {
             watcher.on('update', function (id) {
               saw_update = id;
             });
-
             done(null, watcher);
-          }
-        ]),
-        function (done) {
-          setTimeout(function () {
-            // wait for monitor to setup
-            done();
-          }, 500);
+          });
         },
-        fs.unlink.bind(fs, quilter.util.file.path.call(this, 'test.md')),
-        fs.writeFile.bind(fs, quilter.util.file.path.call(this, 'test.md'), '# good bye')
+        fs.writeFile.bind(fs, quilter.util.file.path.call(this, filename), '# good bye')
       ], function (err, res) {
         assert(!err);
         var watcher = res[0];
         async.waterfall([
           function (done) {
             setTimeout(function () {
-              assert.equal(saw_update, 'test.md');
+              assert.equal(saw_update, filename);
               done();
-            }, 50);
+            }, 6000);
           },
-          request.get.bind(request, [self.remote, 'test.md'].join('/'))
+          request.get.bind(request, [self.remote, filename].join('/'))
         ], function (err, res) {
           assert(!err);
           assert(res.statusCode, 200);

@@ -65,7 +65,6 @@ function watch (done) {
 
     // direct events to the appropriate handler
     function event_handler (task, done) {
-      console.log(arguments);
       var id = util.file.id.call(self, task.fp);
       if (task.event === 'update') {
         // handle creation and updates
@@ -87,26 +86,21 @@ function watch (done) {
     // use a queue to process changes
     var queue = me.queue = async.queue(event_handler);
 
-    // begin listening :O
-    watcher.watchTree(self.mount, {
+    // begin listening :O)
+    watcher.createMonitor(self.mount, {
       ignoreDotFiles: true
-    }, function (f, curr, prev) {
-      if (typeof f == "object" && prev === null && curr === null) {
-        // Finished walking the tree
-        done(me);
-      } else if (curr.nlink === 0) {
-        // f was removed
-        queue.push({
-          task: 'destroy',
-          fp: f
+    }, function (monitor) {
+      ['created', 'changed', 'removed'].forEach(function (event) {
+        monitor.on(event, function (fp) {
+          queue.push({
+            event: (event === 'removed') ? 'destroy' : 'update',
+            fp: fp
+          });
         });
-      } else {
-        // f was changed or created
-        queue.push({
-          task: 'update',
-          fp: f
-        });
-      }
+      });
+
+      me.monitor = monitor;
+      done(me);
     });
 
     return this;
