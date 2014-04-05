@@ -2,7 +2,7 @@ var async = require('async');
 var request = require('request');
 var fs = require('fs');
 var assert = require('assert');
-var quilter = require('../../src-cov');
+var quilter = require('../src-cov');
 
 describe('jobs', function () {
   before(function (done) {
