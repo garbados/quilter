@@ -9,13 +9,11 @@ var docs = require('../docs');
 function update (id, done) {
   var self = this;
   async.parallel([
-    // get doc state
-    docs.remote.get.bind(self, id),
     // get file state
-    docs.local.get.bind(self, id)
+    docs.local.get.bind(self, id),
+    // get doc state
+    docs.remote.get.bind(self, id)
   ], function (err, res) {
-    var doc = res[0];
-    var file = res[1];
     if (err) {
       if (err.status_code === 404) {
         docs.remote.update.call(self, id, done);
@@ -23,15 +21,11 @@ function update (id, done) {
         done(err);
       }
     } else {
-      if (doc.hash === file.hash) {
-        // reject; identical hashes, nothing to do
-        done();
-      } else if (doc.timestamp > file.timestamp) {
-        // reject; remote file is newer
-        done();
-      } else {
-        // EGGXECUTE PLAN EGG
+      var should_update = docs.should_update.apply(null, res);
+      if (should_update) {
         docs.remote.update.call(self, id, done);
+      } else {
+        done();
       }
     }
   });

@@ -5,7 +5,7 @@ var fs = require('fs');
 
 describe('config utils', function () {
   before(function () {
-    this.config_path = './test_config.json';
+    this.config_path = './config_test.json';
   });
 
   it('should return a config even if it doesn\'t exist', function (done) {

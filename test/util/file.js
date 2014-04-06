@@ -5,9 +5,9 @@ describe('file utils', function () {
 
   it('should resolve relative paths', function () {
     var filepath = quilter.util.file.path.call({
-      mount: 'herp/derp'
-    }, 'herp/derp/../../success');
-    assert.equal(filepath, 'success');
+      mount: 'derp'
+    }, 'derp/../success');
+    assert.equal(filepath, 'derp/success');
   });
 
   it('should resolve user paths', function () {

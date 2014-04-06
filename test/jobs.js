@@ -23,7 +23,7 @@ describe('jobs', function () {
   });
 
   afterEach(function (done) {
-    quilter.util.config.set.call(this.quilt, [], done);
+    this.quilt.util.config.set([], done);
   });
 
   after(function (done) {
@@ -36,7 +36,7 @@ describe('jobs', function () {
 
   it('without a command, should execute all saved commands', function (done) {
     var self = this;
-    quilter.util.config.add.call(this.quilt, {
+    this.quilt.util.config.add({
       mount: this.mount,
       remote: this.remote,
       command: 'push'
@@ -60,7 +60,7 @@ describe('jobs', function () {
       assert(!err);
       func(function (err) {
         assert(!err);
-        quilter.util.config.get.call(self.quilt, function (err, config) {
+        self.quilt.util.config.get(function (err, config) {
           assert(!err);
           assert.equal(config.length, 1);
           done();

@@ -14,8 +14,6 @@ function update (id, done) {
     // get file state
     docs.local.get.bind(self, id)
   ], function (err, res) {
-    var doc = res[0];
-    var file = res[1];
     if (err) {
       if (err.code === 'ENOENT') {
         docs.local.update.call(self, id, done);
@@ -23,15 +21,11 @@ function update (id, done) {
         done(err);
       }
     } else {
-      if (doc.hash === file.hash) {
-        // reject; identical hashes, nothing to do
-        done();
-      } else if (doc.timestamp < file.timestamp) {
-        // reject; local file is newer
-        done();
-      } else {
-        // EGGXECUTE PLAN EGG
+      var should_update = docs.should_update.apply(null, res);
+      if (should_update) {
         docs.local.update.call(self, id, done);
+      } else {
+        done();
       }
     }
   });

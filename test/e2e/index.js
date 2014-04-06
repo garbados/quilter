@@ -7,7 +7,7 @@ var quilter = require('../../src-cov');
 
 describe('quilt', function() {
   before(function () {
-    this.config_path = './test_config.json';
+    this.config_path = './config_test.json';
     this.mount = './derp';
     this.remote = 'http://localhost:5984/quilt_test';
     this.quilt = quilter.init({
@@ -73,9 +73,8 @@ describe('quilt', function() {
           func(done);
         }
       ], function (err) {
-        if (err) console.log(err);
         assert(!err);
-        self.quilt.util.config.get.call(self.quilt, function (err, config) {
+        self.quilt.util.config.get(function (err, config) {
           assert(!err);
           assert.equal(config.length, 1);
           done();

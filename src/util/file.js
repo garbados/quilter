@@ -10,15 +10,21 @@ function file_path (mount, fp) {
     mount = this.mount;
   }
 
+  // normalize path
+  fp = path.normalize(fp);
+  mount = path.normalize(mount);
+
   // fix filepath for current OS
   fp = fp.replace(sep, path.sep);
+  
   // add mount if it exists and isn't already in the path
-  if (mount && fp.indexOf(mount) === -1) fp = path.join(mount, fp);
+  if (mount && fp.indexOf(mount) === -1) {
+    fp = path.join(mount, fp);
+  }
+  
   // add home
   var home = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
   fp = fp.replace('~', home);
-  // normalize path
-  fp = path.normalize(fp);
 
   return fp;
 }
@@ -32,6 +38,7 @@ function file_id (mount, fp) {
 
   // normalize path
   fp = file_path(mount, fp);
+  mount = path.normalize(mount);
 
   // strip mount point
   if (fp.indexOf(mount) !== -1) {
@@ -43,6 +50,7 @@ function file_id (mount, fp) {
     .split(path.sep)
     .filter(function (row) { return row; })
     .join(sep);
+
   return fp;
 }
 
