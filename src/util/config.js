@@ -30,6 +30,24 @@ function config_get (fp, done) {
   });
 }
 
+function config_print (fp, done) {
+  if (!done) {
+    done = fp;
+    fp = this.config_path;
+  }
+
+  config_get.call(this, function (err, config) {
+    if (err) return done(err);
+
+    // stringify
+    var str = JSON.stringify(config, undefined, 2);
+    // obscure passwords
+    str = str.replace(/(https?:\/\/)(.*?):(.*?)@/, '$1$2:*****@');
+    // pass it back
+    done(null, str);
+  });
+}
+
 // overwrite the current config
 function config_set (fp, config, done) {
   if (!done) {
@@ -66,6 +84,7 @@ function config_add (fp, config, done) {
 
 module.exports = {
   get: config_get,
+  print: config_print,
   set: config_set,
   add: config_add
 };
