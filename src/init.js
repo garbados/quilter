@@ -40,9 +40,7 @@ Quilter.prototype.plugin = function (name, plugin) {
   } else if (typeof(plugin) === 'function') {
     // bind `this` to the function
     plugin = plugin.bind(this);
-  } else {
-    throw "Unhandled type: " + typeof(plugin);
-  }
+  } // otherwise, it doesn't need binding
 
   // bind to `this`
   if (name) {

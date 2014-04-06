@@ -7,7 +7,10 @@ var local = require('./local');
 // retrieve the remote doc
 function get (id, done) {
   var db = nano(this.remote);
-  db.get(id, done);
+  db.get(id, function (err, doc, headers) {
+    // ignore the headers
+    done(err, doc);
+  });
 }
 
 // update a remote doc
