@@ -22,6 +22,26 @@ describe('config utils', function () {
     });
   });
 
+  it('should obscure passwords when printing', function (done) {
+    var job = {
+      remote: 'http://username:password@localhost:5984/savetest',
+      local: '.test3',
+      command: 'push',
+      watch: true,
+      config: '.testconfig.json'
+    };
+
+    async.series([
+      quilter.util.config.add.bind(this, job),
+      quilter.util.config.print.bind(this)
+    ], function (err, res) {
+      assert(!err);
+      var str = res[1];
+      assert.equal(str.indexOf(':password@'), -1);
+      done();
+    });
+  })
+
   it('should create and overwrite configs', function (done) {
     var self = this;
 
