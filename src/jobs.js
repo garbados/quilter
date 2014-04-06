@@ -30,6 +30,9 @@ function get (command, options, done) {
     func = quilt.util.config.add.bind(quilt, job);
     // return the partial
     done(null, func);
+  } else if (command === 'jobs') {
+    func = quilt.util.config.print.bind(quilt);
+    done(null, func);
   } else {
     var group = quilt[command];
 

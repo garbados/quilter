@@ -276,7 +276,35 @@ describe('quilt', function() {
     });
 
     after(function (done) {
-      fs.unlink(this.config_path, done)
+      fs.unlink(this.config_path, done);
     });
   });
+
+  describe('jobs', function() {
+    before(function (done) {
+      this.quilt.util.config.add({
+        remote: 'http://username:password@localhost:5984/savetest',
+        local: '.test3',
+        command: 'push',
+        watch: true
+      }, done);
+    });
+
+    it('should print all saved jobs, obscuring passwords', function (done) {
+      quilter.jobs.get('jobs', {
+        config_path: this.config_path
+      }, function (err, func) {
+        assert(!err);
+        func(function (err, str) {
+          assert(!err);
+          assert.equal(str.indexOf(':password@'), -1);
+          done();
+        });
+      });
+    });
+
+    after(function (done) {
+      fs.unlink(this.config_path, done);
+    });
+  })
 })
