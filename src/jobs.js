@@ -31,11 +31,19 @@ function get (command, options, done) {
     // return the partial
     done(null, func);
   } else {
-    // PREPARE THE EGGXECUTION
     var group = quilt[command];
-    var func_name = options.watch ? 'watch' : 'list';
-    func = group[func_name].bind(quilt);
+
+    // list, then optionally watch
+    var tasks = [
+      group.list.bind(quilt)
+    ];
+
+    if (options.watch) {
+      tasks.push(group.watch.bind(quilt));
+    }
+
     // return the partial
+    func = async.series.bind(async, tasks);
     done(null, func);
   }
 }
