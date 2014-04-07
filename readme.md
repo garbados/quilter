@@ -17,10 +17,11 @@ That's it! Quilt will watch files on the `remote` database and in the `local` fo
     quilt sync --local {folder} --remote {url} --watch --save
     quilt # runs all saved jobs
 
+## Usage
+    
+    quilt [command] [--options]
 
-Usage: quilt [command] [--options]
-
-## Examples
+## Commands
 
     quilt push    Push local files to the remote database.
     quilt pull    Pull remote files to the local folder.
@@ -67,8 +68,18 @@ By default, jobs are saved to `~/.quilt.json`. It's just JSON, so you can edit i
       } 
     ]
 
+## Contributing
+
+If you want to help but don't know how, check `todo.md` for a list of untested states, along with what module and function they pertain to.
+
+Otherwise, make any changes you'd like to see, [make a pull request](https://github.com/garbados/quilter/pulls), and I'll merge it in once all the tests pass.
+
 ## Tests
 
 The tests sync data with a live CouchDB instance running at `http://localhost:5984`, and uses the `quilt_test` database. So, to run the tests, make sure you have an instance listening at that URL, and don't keep data in that database. N.B.: The database is deleted after the tests are run.
 
 To run the tests, clone the repository, and run `npm test`.
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT), yo.

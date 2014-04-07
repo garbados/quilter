@@ -1,21 +1,11 @@
-# NICE TO HAVE
-
-* winston logging :D
-
 # UNTESTED CASES
 
 * docs.remote.update: gracefully handle non-404 errors
-* pull.update: attempt update when local file is newer
-* pull.update: attempt update when hashes are identical
 * pull.list: handle changes failure gracefully
-* pull.list: delete a file
-* pull.watch: delete a file
 * pull.watch: stop while still processing
 * push.update: handle non-404 errors gracefully
 * push.update: update rather than insert
-* push.update: update when hashes are identical
-* push.update: update when remote doc is newer
-* push.update: valid update >_>
+* push.update: handle changes that should be rejected
 * push.list: call done when queue is already empty
 * push.watch: delete a file
 * push.watch: stop while still processing
@@ -25,7 +15,7 @@
 
 # ROADMAP
 
-    bin                   [ ] TESTED [x] CODED
+    bin                   [x] TESTED [x] CODED
       .index              validate cli opts, then execute accordingly
     quilter
       .jobs               [x] TESTED [x] CODED
@@ -42,10 +32,10 @@
         .list             pull the state of the remote to the local dir
         .watch            pull changes from the remote to the local dir indefinitely
           .close          stop watching for changes
-      .sync               [ ] TESTED [ ] CODED
+      .sync               [x] TESTED [x] CODED
         .list             push and pull the state of the remote and the local dir
         .watch            push and pull the state of the remote and the local dir, indefinitely
-      .docs
+      .docs               [x] TESTED [x] CODED
         .local            [x] TESTED [x] CODED
           .update         upsert a local file based on a remote doc
           .destroy        delete a local file
@@ -55,14 +45,15 @@
           .destroy        delete a remote doc
           .get            retrieve a remote doc
       .util               [x] TESTED [x] CODED
-        .config
-          .get            returns the current config, or an empty array
-          .add            adds a job to the current config
-          .set            overwrites the current config with the given array
         .hash             generates an md5 hash based on a file's contents
         .mkdir            recursively creates directories along a path
         .rmdir            `rm -r` equivalent
-        .file
+        .config           [x] TESTED [x] CODED
+          .print          stringify config, obscuring passwords
+          .get            returns the current config, or an empty array
+          .add            adds a job to the current config
+          .set            overwrites the current config with the given array
+        .file             [x] TESTED [x] CODED
           .path           returns the normalized path to the file, adding the mount point
           .id             returns the file id for a given path, stripping the mount point
           .type           returns the file's mimetype
