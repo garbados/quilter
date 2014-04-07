@@ -6,9 +6,9 @@ var docs = require('./docs');
 
 function Quilter (config) {
   config = config || {};
-  this.mount = config.mount || '~';
+  this.mount = config.local || config.mount || '~';
   this.remote = config.remote || 'http://localhost:5984/quilt';
-  this.config_path = config.config_path || '~/.quilt.json';
+  this.config_path = config.config || config.config_path || '~/.quilt.json';
 
   // plugins!
   this.plugin('push', push);
@@ -42,7 +42,7 @@ Quilter.prototype.plugin = function (name, plugin) {
     plugin = plugin.bind(this);
   } // otherwise, it doesn't need binding
 
-  // bind to `this`
+  // attach to the namespace
   if (name) {
     this[name] = plugin;
   }

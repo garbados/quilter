@@ -3,28 +3,42 @@ var fs = require('fs');
 var path = require('path');
 var sep = '/'; // separator used in urls
 
+function normalize_path (fp) {
+  if (!fp) fp = this.mount;
+  var home = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
+  fp = fp.replace('~', home);
+  fp = path.normalize(fp);
+  return fp;
+}
+
+// TODO fails :(
 function file_path (mount, fp) {
   // defaults
-  if (!fp) {
+  if (!mount && !fp) {
+    return normalize_path.call(this, this.mount);
+  } else if (!fp) {
     fp = mount;
     mount = this.mount;
   }
 
   // normalize path
   fp = path.normalize(fp);
-  mount = path.normalize(mount);
 
   // fix filepath for current OS
   fp = fp.replace(sep, path.sep);
   
-  // add mount if it exists and isn't already in the path
-  if (mount && fp.indexOf(mount) === -1) {
-    fp = path.join(mount, fp);
-  }
-  
   // add home
   var home = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
   fp = fp.replace('~', home);
+  
+  // add mount if it exists and isn't already in the path
+  if (mount) {
+    mount = path.normalize(mount);
+    mount = mount.replace('~', home);
+    if (fp.indexOf(mount) === -1) {
+      fp = path.join(mount, fp); 
+    }
+  }
 
   return fp;
 }
@@ -61,5 +75,6 @@ function file_type (fp) {
 module.exports = {
   id: file_id,
   path: file_path,
-  type: file_type
+  type: file_type,
+  norm: normalize_path
 };

@@ -40,8 +40,9 @@ var destroy = docs.remote.destroy;
 function list (done) {
   var self = this;
   var queue = async.queue(update.bind(this));
+  var mount = this.util.file.path();
 
-  dive(this.mount, function (err, f) {
+  dive(mount, function (err, f) {
     if (err) throw(err);
     var id = util.file.id.call(self, f);
     log.info(id, 'inspecting');

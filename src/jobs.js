@@ -10,14 +10,14 @@ function get (command, options, done) {
     quilt.util.config.get.call(quilt, function (err, config) {
       if (err) return done(err);
 
-      var tasks = [];
-      config.forEach(function (job) {
-        tasks.push(get.bind(null, job.command, job));
-      });
+      async.map(config, function (job, done) {
+        get(job.command, job, done);
+      }, function (err, tasks) {
+        if (err) return done(err);
 
-      func = async.parallel.bind(async, tasks);
-      // return the partial
-      done(null, func);
+        func = async.parallel.bind(async, tasks);
+        done(null, func);
+      });
     });
   } else if (options.save) {
     // format the job

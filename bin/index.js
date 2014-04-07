@@ -34,7 +34,6 @@ var yargs = require('yargs')
       r: 'remote',
       m: 'mount',
       l: 'local',
-      local: 'mount',
       c: 'config',
       s: 'save',
       w: 'watch',
@@ -76,9 +75,7 @@ if (known_commands.indexOf(command) === -1) {
     if (err) throw err;
     func(function (err, result) {
       if (err) throw err;
-      if (typeof(result) === 'string') {
-        console.log(result);
-      }
+      console.log(result);
     });
   }); 
 }

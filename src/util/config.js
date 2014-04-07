@@ -1,13 +1,7 @@
 var async = require('async');
 var fs = require('fs');
 var path = require('path');
-
-function normalize_path (fp) {
-  var home = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
-  fp = fp.replace('~', home);
-  fp = path.normalize(fp);
-  return fp;
-}
+var normalize_path = require('./file').norm;
 
 // get the current config
 // if it doesn't exist
