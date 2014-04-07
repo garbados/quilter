@@ -5,6 +5,7 @@ var EventEmitter = require('events').EventEmitter;
 var async = require('async');
 var dive = require('dive');
 var docs = require('../docs');
+var log = require('winston');
 
 function update (id, done) {
   var self = this;
@@ -16,6 +17,7 @@ function update (id, done) {
   ], function (err, res) {
     if (err) {
       if (err.status_code === 404) {
+        log.info(id, 'updating');
         docs.remote.update.call(self, id, done);
       } else {
         done(err);
@@ -23,8 +25,10 @@ function update (id, done) {
     } else {
       var should_update = docs.should_update.apply(null, res);
       if (should_update) {
+        log.info(id, 'updating');
         docs.remote.update.call(self, id, done);
       } else {
+        log.info(id, 'skipping');
         done();
       }
     }
@@ -40,8 +44,10 @@ function list (done) {
   dive(this.mount, function (err, f) {
     if (err) throw(err);
     var id = util.file.id.call(self, f);
+    log.info(id, 'inspecting');
     queue.push(id);
   }, function () {
+    log.info('finishing...');
     if (queue.length()) {
       queue.drain = done;
     } else {
@@ -56,6 +62,14 @@ function watch (done) {
   function Watcher (done) {
     EventEmitter.call(this);
     var me = this;
+
+    me.on('update', function (id) {
+      log.info(id, 'inspecting');
+    });
+
+    me.on('destroy', function (id) {
+      log.info(id, 'destroying');
+    });
 
     // direct events to the appropriate handler
     function event_handler (task, done) {
@@ -99,6 +113,7 @@ function watch (done) {
 
   // quit
   Watcher.prototype.close = function (done) {
+    log.info('finishing...');
     // stop listening to monitor
     this.monitor.removeAllListeners();
     // stop listeners on the watcher itself

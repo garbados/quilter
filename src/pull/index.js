@@ -5,6 +5,7 @@ var fs = require('fs');
 var nano = require('nano');
 var async = require('async');
 var EventEmitter = require('events').EventEmitter;
+var log = require('winston');
 
 function update (id, done) {
   var self = this;
@@ -16,6 +17,7 @@ function update (id, done) {
   ], function (err, res) {
     if (err) {
       if (err.code === 'ENOENT') {
+        log.info(id, 'updating');
         docs.local.update.call(self, id, done);
       } else {
         done(err);
@@ -23,8 +25,10 @@ function update (id, done) {
     } else {
       var should_update = docs.should_update.apply(null, res);
       if (should_update) {
+        log.info(id, 'updating');
         docs.local.update.call(self, id, done);
       } else {
+        log.info(id, 'skipping');
         done();
       }
     }
@@ -40,8 +44,10 @@ function list (done) {
   // use a queue to consume the changes feed
   var queue = async.queue(function (change, done) {
     if (change.deleted) {
+      log.info(change.id, 'destroying');
       destroy.call(self, change.id, done);
     } else {
+      log.info(change.id, 'inspecting');
       update.call(self, change.id, done);
     }
   });
@@ -54,7 +60,10 @@ function list (done) {
       // for each entry, add to a queue
       queue.push(body.results);
       // quit when the queue empties
-      queue.drain = done;
+      queue.drain = function () {
+        log.info('finishing...');
+        done();
+      };
     }
   });
 }
@@ -93,6 +102,7 @@ function watch (done) {
 
   // quit
   Watcher.prototype.close = function (done) {
+    log.info('finishing...');
     // stop listening
     this.feed.stop();
     // quit when the queue is drained

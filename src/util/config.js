@@ -1,5 +1,13 @@
 var async = require('async');
 var fs = require('fs');
+var path = require('path');
+
+function normalize_path (fp) {
+  var home = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
+  fp = fp.replace('~', home);
+  fp = path.normalize(fp);
+  return fp;
+}
 
 // get the current config
 // if it doesn't exist
@@ -9,6 +17,12 @@ function config_get (fp, done) {
     done = fp;
     fp = this.config_path;
   }
+
+  fp = normalize_path(fp);
+
+  var home = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
+  fp = fp.replace('~', home);
+  fp = path.normalize(fp);
 
   fs.exists(fp, function (exists) {
     if (exists) {
@@ -36,13 +50,15 @@ function config_print (fp, done) {
     fp = this.config_path;
   }
 
-  config_get.call(this, function (err, config) {
+  fp = normalize_path(fp);
+
+  config_get(fp, function (err, config) {
     if (err) return done(err);
 
     // stringify
     var str = JSON.stringify(config, undefined, 2);
     // obscure passwords
-    str = str.replace(/(https?:\/\/)(.*?):(.*?)@/, '$1$2:*****@');
+    str = str.replace(/(https?:\/\/)(.*?):(.*?)@/g, '$1$2:*****@');
     // pass it back
     done(null, str);
   });
@@ -56,6 +72,8 @@ function config_set (fp, config, done) {
     fp = this.config_path;
   }
 
+  fp = normalize_path(fp);
+
   fs.writeFile(fp, JSON.stringify(config, undefined, 2), done);
 }
 
@@ -66,6 +84,8 @@ function config_add (fp, config, done) {
     config = fp;
     fp = this.config_path;
   }
+
+  fp = normalize_path(fp);
 
   async.waterfall([
     config_get.bind(this, fp),
