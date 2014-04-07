@@ -5,7 +5,7 @@
 [![NPM version](https://badge.fury.io/js/quilter.png)](http://badge.fury.io/js/quilter)
 
 
-Maps a file directory to a CouchDB / Cloudant database. Which is to say, it's an open-source Dropbox.
+Push, pull, and sync files between local folders and a CouchDB / Cloudant database. Which is to say, it's an open-source Dropbox.
 
 ## Installation
 
@@ -17,31 +17,42 @@ That's it! Quilter will watch files on the `remote` database and in the `local` 
     quilt sync --local {folder} --remote {url} --watch --save
     quilt # runs all saved jobs
 
+## Usage
+    
+    quilt [command] [--options]
+
 ## Commands
 
-* `pull`: pull files from `remote` into `local`
-* `push`: push files from `local` up to `remote`
-* `sync`: push and pull files from and to `local` and `remote`
-* (default): run all saved jobs
-* `jobs`: list all saved jobs
+    quilt push    Push local files to the remote database.
+    quilt pull    Pull remote files to the local folder.
+    quilt sync    Push and pull files between the local folder and remote database.
+    quilt jobs    List all saved jobs, obscuring any passwords.
+    quilt         Runs all saved jobs.
 
-## Options
+## Options:
 
-* `--local`: a local folder, like `~/Pictures`.
-* `--remote`: a remote database, like a CouchDB or Cloudant instance.
-* `--save`: save the given command for later re-use.
-* `--watch`: continue watching and reacting to changes indefinitely.
-* `--config`: path to a non-default file to use for saving and reading configuration values.
-* `--log`: indicates level for logging. Choose from error, warn, info, verbose, debug, and silly.
+    --remote   [-r] Specifies the remote database to use.
+                                        [default: "http://localhost:5984/quilt"]
+    --mount    [-m] Specifies the local folder to push, pull, and sync files from.
+                                                                  [default: "~"]
+    --config   [-c] Specifies the configuration file to use.
+                                                      [default: "~/.quilt.json"]
+    --save     [-s] Instead of executing the given command, save it to the config
+             file.                                              [default: false]
+    --watch    [-w] Execute the given command, acting on any changes indefinitely.
+                                                                [default: false]
+    --verbose  [-v] Set logging level. Enter multiple times for more logging.     
+    --log      Set logging level explicitly, ex: warn, info, verbose
+                                                               [default: "warn"]
 
 ## Quilting on Startup
 
-N.B. These instructions are for *nix systems, like Linux and Mac OS X
+N.B. These instructions are for *nix systems, like Linux and Mac OS X. If you know how to quilt on startup in other environments, please make a [pull request](https://github.com/garbados/quilter/pulls)!
 
 Using [forever](https://github.com/nodejitsu/forever) and `cron`, you can set Quilter to run on a regular basis. Like this:
 
     sudo npm install -g forever
-    echo '@reboot' `which node` `which forever` '--minUptime 1' `which quilt` '--log info' | crontab
+    echo '@reboot' `which node` `which forever` '--minUptime 1' `which quilt` '-v' | crontab
 
 That'll run all saved jobs whenever your computer starts. If Quilter fails, `forever` will restart it.
 
@@ -57,8 +68,18 @@ By default, jobs are saved to `~/.quilt.json`. It's just JSON, so you can edit i
       } 
     ]
 
+## Contributing
+
+If you want to help but don't know how, check `todo.md` for a list of untested states, along with what module and function they pertain to.
+
+Otherwise, make any changes you'd like to see, [make a pull request](https://github.com/garbados/quilter/pulls), and I'll merge it in once all the tests pass.
+
 ## Tests
 
-The tests sync data with a live CouchDB instance running at `http://localhost:5984`. So, to run the tests, make sure you have an instance listening at that URL.
+The tests sync data with a live CouchDB instance running at `http://localhost:5984`, and uses the `quilt_test` database. So, to run the tests, make sure you have an instance listening at that URL, and don't keep data in that database. N.B.: The database is deleted after the tests are run.
 
-To run the tests, do `npm test`.
+To run the tests, clone the repository, and run `npm test`.
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT), yo.
