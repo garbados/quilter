@@ -28,7 +28,7 @@ var yargs = require('yargs')
     .example('$0 push', 'Push local files to the remote database.')
     .example('$0 pull', 'Pull remote files to the local folder.')
     .example('$0 sync', 'Push and pull files between the local folder and remote database.')
-    .example('$0 jobs', 'List ')
+    .example('$0 jobs', 'List all saved jobs, obscuring any passwords.')
     .example('$0', 'Runs all saved jobs.')
     .alias({
       r: 'remote',
