@@ -11,7 +11,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "grunt",
+    "test": "./node_modules/.bin/grunt",
     "cov": "./node_modules/.bin/mocha --reporter html-cov > coverage.html",
     "lcov": "./node_modules/.bin/mocha -R mocha-lcov-reporter",
     "coveralls": "./node_modules/.bin/mocha -R mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js"
@@ -33,12 +33,14 @@
   "author": "Max Thayer <garbados@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "~1.13.0",
-    "grunt-contrib-jshint": "~0.6.4",
     "grunt": "~0.4.2",
-    "matchdep": "~0.3.0",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-jscoverage": "0.0.3",
     "grunt-simple-mocha": "~0.4.0",
-    "grunt-jscoverage": "0.0.3"
+    "jscoverage": "^0.5.3",
+    "matchdep": "~0.3.0",
+    "mocha": "~1.13.0"
   },
   "dependencies": {
     "watch": "~0.8.0",
